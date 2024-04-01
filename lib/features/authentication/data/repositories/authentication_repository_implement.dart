@@ -63,4 +63,14 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return Left(FirebaseFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<Users?> getUserInformationsFromGoogle() async {
+    try {
+      final res = await _dataSource.getUserInformationsFromGoogle();
+      return Right(res);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
 }

@@ -43,6 +43,11 @@ dependencies:
   cloud_firestore:
   crypto:
   intl_phone_number_input:
+  cubit:
+  bloc:
+  get_it:
+  flutter_bloc:
+  google_sign_in: 
 
 dev_dependencies:
   flutter_test:

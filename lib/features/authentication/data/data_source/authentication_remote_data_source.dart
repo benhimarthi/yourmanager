@@ -4,6 +4,7 @@ import 'package:yourmanager/core/errors/failure.dart';
 import 'package:yourmanager/core/util/password_hash.dart';
 import 'package:yourmanager/features/authentication/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthenticationRemoteDataSrc {
   Future<UserModel> login(
@@ -18,12 +19,15 @@ abstract class AuthenticationRemoteDataSrc {
 
   Future<void> updateUserInformations(UserModel user);
   Future<UserModel> registerAccountInformations(UserModel userInformations);
+  Future<UserModel?> getUserInformationsFromGoogle();
 }
 
 class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
-  AuthenticationRemoteDataSrcImpl(this._firebaseAuth, this._firebaseFirestore);
+  final GoogleSignIn googleSignIn;
+  AuthenticationRemoteDataSrcImpl(
+      this._firebaseAuth, this._firebaseFirestore, this.googleSignIn);
 
   @override
   Future<UserModel> login(
@@ -110,5 +114,31 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
     } catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }
+  }
+
+  @override
+  Future<UserModel?> getUserInformationsFromGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final UserCredential authResult =
+            await _firebaseAuth.signInWithCredential(credential);
+        final User? user = authResult.user;
+        return UserModel.fromFirebaseUserCredential(user);
+      }
+    } catch (error) {
+      print(error);
+      throw FirebaseExceptions(message: error.toString(), statusCode: 404);
+    }
+    return null;
   }
 }

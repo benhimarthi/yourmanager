@@ -9,11 +9,9 @@ abstract class AuthenticationRepository {
     Function(Failure) onVerificationFailed,
     Function(String) onVerificationCompleted,
   );
-
   ResultFuture<Users> login(
       String verificationId, String smsCode, String password);
-
   ResultVoid updateUserInformations(Users user);
-
   ResultFuture<Users> registerAccountInformations(Users userToSave);
+  ResultFuture<Users?> getUserInformationsFromGoogle();
 }
