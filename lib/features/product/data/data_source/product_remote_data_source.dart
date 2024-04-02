@@ -56,7 +56,7 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
             message: "A problem occure during the creation of the product.",
             statusCode: 404);
       }
-    } catch (e) {
+    } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }
   }
@@ -124,7 +124,7 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
         'images': images,
       });
       return getProduct(id);
-    } catch (e) {
+    } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }
   }

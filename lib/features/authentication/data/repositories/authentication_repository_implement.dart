@@ -14,7 +14,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   ResultFuture<Users> login(
-      String verificationId, String smsCode, String password) async {
+    String verificationId,
+    String smsCode,
+    String password,
+  ) async {
     try {
       final u = await _dataSource.login(verificationId, smsCode, password);
       return Right(u);

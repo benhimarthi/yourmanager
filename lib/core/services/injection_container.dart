@@ -10,6 +10,14 @@ import 'package:yourmanager/features/authentication/domain/usecases/login.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/register_account_informations.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/verify_phone_number.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/authentication_cubit.dart';
+import 'package:yourmanager/features/product/data/data_source/product_remote_data_source.dart';
+import 'package:yourmanager/features/product/data/repositories/product_repository_impl.dart';
+import 'package:yourmanager/features/product/domain/repositories/product_repository.dart';
+import 'package:yourmanager/features/product/domain/usecases/add_new_product.dart';
+import 'package:yourmanager/features/product/domain/usecases/get_all_products.dart';
+import 'package:yourmanager/features/product/domain/usecases/remove_product.dart';
+import 'package:yourmanager/features/product/domain/usecases/update_product_informations.dart';
+import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -42,4 +50,21 @@ Future<void> init() async {
     ..registerLazySingleton(() => FirebaseAuth.instance)
     ..registerLazySingleton(() => FirebaseFirestore.instance)
     ..registerLazySingleton(() => GoogleSignIn());
+
+  sl
+    ..registerFactory(() => ProductManagerCubit(
+          addAProduct: sl(),
+          getAllProducts: sl(),
+          removeProduct: sl(),
+          updateProductInformations: sl(),
+        ))
+    ..registerLazySingleton(() => AddNewProduct(sl()))
+    ..registerLazySingleton(() => GetAllProducts(sl()))
+    ..registerLazySingleton(() => RemoveProduct(sl()))
+    ..registerLazySingleton(() => UpdateProductInformations(sl()))
+    ..registerLazySingleton<ProductRepository>(
+        () => ProductRepositoryImpl(sl()))
+    ..registerLazySingleton<ProductRemoteDataSrc>(
+        () => ProductRemoteDataScrImpl(sl()))
+    ..registerLazySingleton(() => FirebaseFirestore.instance);
 }
