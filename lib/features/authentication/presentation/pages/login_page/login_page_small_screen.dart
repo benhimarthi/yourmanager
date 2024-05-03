@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:yourmanager/core/util/app_colors.dart';
 import 'package:yourmanager/core/util/phone_number_validator.dart';
-import 'package:yourmanager/features/authentication/presentation/widgets/big_text_format.dart';
-import 'package:yourmanager/features/authentication/presentation/widgets/textinput_decoration.dart';
+import 'package:yourmanager/core/widgets/big_text_format.dart';
+import 'package:yourmanager/core/widgets/textinput_decoration.dart';
 
 class LoginS extends StatefulWidget {
   const LoginS({super.key});

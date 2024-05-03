@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yourmanager/features/authentication/data/data_source/authentication_remote_data_source.dart';
@@ -10,6 +11,13 @@ import 'package:yourmanager/features/authentication/domain/usecases/login.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/register_account_informations.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/verify_phone_number.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/authentication_cubit.dart';
+import 'package:yourmanager/features/img_vids/datas/data_source/representation_remote_data_source.dart';
+import 'package:yourmanager/features/img_vids/datas/repositories/images_repository.dart';
+import 'package:yourmanager/features/img_vids/domain/repositories/representation_repository.dart';
+import 'package:yourmanager/features/img_vids/domain/usecases/delete_image.dart';
+import 'package:yourmanager/features/img_vids/domain/usecases/get_image.dart';
+import 'package:yourmanager/features/img_vids/domain/usecases/upload_image.dart';
+import 'package:yourmanager/features/img_vids/presentation/cubit/representation_cubit.dart';
 import 'package:yourmanager/features/product/data/data_source/product_remote_data_source.dart';
 import 'package:yourmanager/features/product/data/repositories/product_repository_impl.dart';
 import 'package:yourmanager/features/product/domain/repositories/product_repository.dart';
@@ -65,6 +73,20 @@ Future<void> init() async {
     ..registerLazySingleton<ProductRepository>(
         () => ProductRepositoryImpl(sl()))
     ..registerLazySingleton<ProductRemoteDataSrc>(
-        () => ProductRemoteDataScrImpl(sl()))
-    ..registerLazySingleton(() => FirebaseFirestore.instance);
+        () => ProductRemoteDataScrImpl(sl()));
+
+  sl
+    ..registerFactory(() => RepresentationCubit(
+          uploadImage: sl(),
+          getImage: sl(),
+          deleteImage: sl(),
+        ))
+    ..registerLazySingleton(() => UploadImage(sl()))
+    ..registerLazySingleton(() => GetImage(sl()))
+    ..registerLazySingleton(() => DeleteImage(sl()))
+    ..registerLazySingleton<ReprensentionRepository>(
+        () => ImagesRepository(sl()))
+    ..registerLazySingleton<RepresentationRemoteDataSource>(
+        () => RepresentationRemoteDataSourceImpl(sl()))
+    ..registerLazySingleton(() => FirebaseStorage.instance);
 }

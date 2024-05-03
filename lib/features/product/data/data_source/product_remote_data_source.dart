@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yourmanager/core/errors/exceptions.dart';
-import 'package:yourmanager/features/product/data/models/ProductModels.dart';
+import 'package:yourmanager/features/product/data/models/product_models.dart';
 import '../../domain/entities/product.dart';
 
 abstract class ProductRemoteDataSrc {

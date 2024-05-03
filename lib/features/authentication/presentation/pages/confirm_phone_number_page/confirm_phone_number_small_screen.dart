@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/util/app_colors.dart';
-import '../../widgets/big_text_format.dart';
-import '../../widgets/textinput_decoration.dart';
+import '../../../../../core/widgets/big_text_format.dart';
+import '../../../../../core/widgets/textinput_decoration.dart';
 
 class ConfirmPhoneNumberSmallScreen extends StatefulWidget {
   final number;

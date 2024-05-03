@@ -8,8 +8,8 @@ import 'package:yourmanager/features/authentication/presentation/cubit/authentic
 import '../../../../../core/util/app_colors.dart';
 import '../../../../../core/util/phone_number_validator.dart';
 import '../../../domain/entities/users.dart';
-import '../../widgets/big_text_format.dart';
-import '../../widgets/textinput_decoration.dart';
+import '../../../../../core/widgets/big_text_format.dart';
+import '../../../../../core/widgets/textinput_decoration.dart';
 
 class RegisterPageSmallScreen extends StatefulWidget {
   const RegisterPageSmallScreen({super.key});

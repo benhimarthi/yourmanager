@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:yourmanager/features/product/data/models/ProductModels.dart';
+import 'package:yourmanager/features/product/data/models/product_models.dart';
 import 'package:yourmanager/features/product/domain/entities/product.dart';
 
 class ProductManagerState extends Equatable {

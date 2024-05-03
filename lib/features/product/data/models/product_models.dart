@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yourmanager/features/product/domain/entities/product.dart';
 
 class ProductModel extends Product {
-  ProductModel({
+  const ProductModel({
     required super.id,
     required super.title,
     required super.description,
@@ -21,6 +21,6 @@ class ProductModel extends Product {
         category: data['category'] ?? '',
         price: (data['price'] ?? 0.0).toDouble(),
         stockPrice: (data['stock_price'] ?? 0.0).toDouble(),
-        images: data['images'] ?? []);
+        images: data['images'] as List<String>);
   }
 }

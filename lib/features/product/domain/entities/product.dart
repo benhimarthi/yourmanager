@@ -7,7 +7,7 @@ class Product extends Equatable {
   final String category;
   final double price;
   final double stockPrice;
-  final List<String> images;
+  final List<dynamic> images;
   const Product({
     required this.id,
     required this.title,
