@@ -1,29 +1,36 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/get_user_informations_from_google.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/login.dart';
+import 'package:yourmanager/features/authentication/domain/usecases/login_with_email_and_password.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/register_account_informations.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/verify_phone_number.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/authentication_state.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../domain/entities/users.dart';
+import '../../domain/usecases/register_account_with_email_and_password.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final Login _login;
   final RegisterAccountInformations _registerAccountInformations;
   final VerifyPhoneNumber _verifyPhoneNumber;
   final GetUserInfosFromGoogle _getUserInfosFromGoogle;
-
+  final RegisterAccountWithEmailAndPassword _accountWithEmailAndPassword;
+  final LoginWithEmailAndPassword _loginWithEmailAndPassword;
   AuthenticationCubit({
     required Login login,
     required RegisterAccountInformations registerAccountInformations,
     required VerifyPhoneNumber verifyPhoneNumber,
     required GetUserInfosFromGoogle getUserInfosFromGoogle,
+    required RegisterAccountWithEmailAndPassword
+        registerAccountWithEmailAndPassword,
+    required LoginWithEmailAndPassword loginWithEmailAndPassword,
   })  : _login = login,
         _registerAccountInformations = registerAccountInformations,
         _verifyPhoneNumber = verifyPhoneNumber,
         _getUserInfosFromGoogle = getUserInfosFromGoogle,
+        _accountWithEmailAndPassword = registerAccountWithEmailAndPassword,
+        _loginWithEmailAndPassword = loginWithEmailAndPassword,
         super(const AuthenticationInitial());
 
   Future<void> verifyPhoneNumber(
@@ -71,6 +78,33 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     result.fold(
       (failure) => emit(AuthenticationWithGoogleFailed(failure.message)),
       (user) => emit(AuthenticationWithGoogleSuccessfull(user!)),
+    );
+  }
+
+  Future<void> registerAccountWithEmailAndPassword(
+      String email, String password) async {
+    final result =
+        await _accountWithEmailAndPassword(AccountParams(email, password));
+    result.fold(
+      (failure) =>
+          emit(CreateUserAccountWithEmailAndPasswordFailed(failure.message)),
+      (user) => emit(CreateUserAccountWithEmailAndPasswordSuccessfully(user)),
+    );
+  }
+
+  Future<void> loginWithEmailAndPassword(String email, String password) async {
+    final result =
+        await _loginWithEmailAndPassword(LoginWithEmailAndPasswordParams(
+      email,
+      password,
+    ));
+    result.fold(
+      (failure) {
+        emit(LoginWithEmailAndPasswordFailed(failure.message));
+      },
+      (user) {
+        emit(LoginWithEmailAndPasswordSuccessfully(user));
+      },
     );
   }
 }

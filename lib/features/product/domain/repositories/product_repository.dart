@@ -6,20 +6,25 @@ abstract class ProductRepository {
     String title,
     String description,
     String category,
+    String expirationDate,
+    String barcode,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   );
   ResultFuture<Product> getProduct(String id);
+  ResultFuture<Product> getProductByBarecode(String barecode);
   ResultFuture<List<Product>> getAllProducts();
   ResultFuture<Product> updateProductInformations(
     String id,
     String title,
     String description,
     String category,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   );
   ResultVoid removeProduct(String id);
 }

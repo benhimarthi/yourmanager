@@ -15,9 +15,10 @@ class UpdateProductInformations
       params.title,
       params.description,
       params.category,
+      params.images,
       params.price,
       params.stockPrice,
-      params.images,
+      params.discount,
     );
   }
 }
@@ -27,16 +28,18 @@ class UpdateProductInfosParams {
   final String title;
   final String description;
   final String category;
+  final String images;
   final double price;
   final double stockPrice;
-  final List<String> images;
+  final double discount;
   UpdateProductInfosParams({
     required this.id,
     required this.title,
     required this.description,
     required this.category,
+    required this.images,
     required this.price,
     required this.stockPrice,
-    required this.images,
+    required this.discount,
   });
 }

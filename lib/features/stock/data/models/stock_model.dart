@@ -6,6 +6,7 @@ class StockModel extends Stock {
     required super.id,
     required super.productId,
     required super.quantity,
+    required super.userId,
   });
 
   factory StockModel.fromFireStore(DocumentSnapshot doc) {
@@ -14,6 +15,7 @@ class StockModel extends Stock {
       id: doc.id,
       productId: data['product_id'] ?? '',
       quantity: data['quantity'] ?? 0,
+      userId: data['user_id'] ?? '',
     );
   }
 }

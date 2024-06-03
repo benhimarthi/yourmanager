@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yourmanager/features/authentication/domain/entities/users.dart';
 
@@ -82,4 +83,25 @@ class AccountRegisterEnd extends AuthenticationState {
 class AccountRegisterFaild extends AuthenticationState {
   final String message;
   const AccountRegisterFaild(this.message);
+}
+
+class CreateUserAccountWithEmailAndPasswordSuccessfully
+    extends AuthenticationState {
+  final UserCredential myUser;
+  const CreateUserAccountWithEmailAndPasswordSuccessfully(this.myUser);
+}
+
+class CreateUserAccountWithEmailAndPasswordFailed extends AuthenticationState {
+  final String message;
+  const CreateUserAccountWithEmailAndPasswordFailed(this.message);
+}
+
+class LoginWithEmailAndPasswordSuccessfully extends AuthenticationState {
+  final UserCredential myUser;
+  const LoginWithEmailAndPasswordSuccessfully(this.myUser);
+}
+
+class LoginWithEmailAndPasswordFailed extends AuthenticationState {
+  final String message;
+  const LoginWithEmailAndPasswordFailed(this.message);
 }

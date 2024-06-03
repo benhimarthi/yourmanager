@@ -11,10 +11,18 @@ class StockRepositoryImpl extends StockRepository {
   StockRepositoryImpl(this._dataSource);
   @override
   ResultVoid addItemsInStock(
-      int itemNumber, String productId, String stockId) async {
+    int itemNumber,
+    String productId,
+    String stockId,
+    String userId,
+  ) async {
     try {
-      final result =
-          await _dataSource.addItemsInStock(itemNumber, productId, stockId);
+      final result = await _dataSource.addItemsInStock(
+        itemNumber,
+        productId,
+        stockId,
+        userId,
+      );
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -59,5 +67,10 @@ class StockRepositoryImpl extends StockRepository {
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
     }
+  }
+
+  @override
+  ResultFuture<Stock> getStockByUserId(String id) {
+    throw UnimplementedError();
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yourmanager/core/util/change_screen_mang.dart';
 import 'package:yourmanager/core/widgets/small_text_format.dart';
+import 'package:yourmanager/features/balance_sheet/presentation/pages/blanace_sheet_page.dart';
 
 import '../util/int_2_month.dart';
 
@@ -170,8 +172,6 @@ class _CustomCalandarState extends State<CustomCalandar> {
   }
 
   Row lastLine() {
-    final fdate = DateTime(year, month, 1);
-    int weekDay = fdate.weekday;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(8, (index) {
@@ -239,45 +239,55 @@ class _CustomCalandarState extends State<CustomCalandar> {
 
   Widget repr(String day, bool isToday) {
     return !isToday
-        ? Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.only(top: 5, bottom: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-                child: SmallText(
-              content: day,
-              color: Theme.of(context).primaryColor,
-            )),
-          )
-        : Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
+        ? GestureDetector(
+            onTap: () {
+              nextScreen(context, BalanceSheetPage());
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              margin: const EdgeInsets.only(top: 5, bottom: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
               ),
-              Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+              child: Center(
+                  child: SmallText(
+                content: day,
+                color: Theme.of(context).primaryColor,
+              )),
+            ),
+          )
+        : GestureDetector(
+            onTap: () {
+              nextScreen(context, BalanceSheetPage());
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
                 ),
-                child: Center(
-                    child: SmallText(
-                  content: day,
-                  color: Theme.of(context).primaryColor,
-                )),
-              )
-            ],
+                Container(
+                  width: 25,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Center(
+                      child: SmallText(
+                    content: day,
+                    color: Theme.of(context).primaryColor,
+                  )),
+                )
+              ],
+            ),
           );
   }
 }

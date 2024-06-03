@@ -12,6 +12,10 @@ class ProductManagerStateInitial extends ProductManagerState {
   const ProductManagerStateInitial();
 }
 
+class GettingAllproduct extends ProductManagerState {
+  const GettingAllproduct();
+}
+
 class GetAllProductsSuccessfully extends ProductManagerState {
   final List<Product> myProducts;
   const GetAllProductsSuccessfully(this.myProducts);

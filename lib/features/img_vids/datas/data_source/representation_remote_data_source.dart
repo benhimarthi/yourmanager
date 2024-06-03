@@ -29,7 +29,7 @@ class RepresentationRemoteDataSourceImpl
   @override
   Future<String> getImage(String imagePath) async {
     try {
-      final ref = _firebaseStorage.ref().child(imagePath);
+      final ref = _firebaseStorage.ref().child('images/$imagePath');
       final imageUrl = await ref.getDownloadURL();
       return imageUrl;
     } on FirebaseException catch (e) {
@@ -41,14 +41,13 @@ class RepresentationRemoteDataSourceImpl
   @override
   Future<String> uplaodImage(File imageFile) async {
     try {
-      String path = 'images/${DateTime.now().millisecondsSinceEpoch}';
-      Reference storageReference = _firebaseStorage.ref(path);
+      String filename = DateTime.now().millisecondsSinceEpoch.toString();
+      String path = 'images/$filename';
+      Reference storageReference = _firebaseStorage.ref().child(path);
       UploadTask uploadTask = storageReference.putFile(imageFile);
-      await uploadTask.whenComplete(() {
-        return path;
-      }).onError((error, stackTrace) =>
-          throw FirebaseExceptions(message: error.toString(), statusCode: 404));
-      return path;
+      TaskSnapshot taskSnapshot = await uploadTask;
+      taskSnapshot.ref.getDownloadURL().then((value) {});
+      return filename;
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

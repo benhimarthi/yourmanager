@@ -5,29 +5,25 @@ class Product extends Equatable {
   final String title;
   final String description;
   final String category;
+  final String expirationDate;
+  final String barcode;
   final double price;
   final double stockPrice;
-  final List<dynamic> images;
+  final double discount;
+  final String image;
+
   const Product({
+    required this.expirationDate,
+    required this.barcode,
+    required this.discount,
     required this.id,
     required this.title,
     required this.description,
     required this.category,
     required this.price,
     required this.stockPrice,
-    required this.images,
+    required this.image,
   });
-
-  Product.empty()
-      : this(
-          id: "_empty.id",
-          title: "_empty.title",
-          description: "_empty.description",
-          category: "_empty.category",
-          price: -1,
-          stockPrice: -1,
-          images: [],
-        );
 
   @override
   List<Object?> get props => [id];

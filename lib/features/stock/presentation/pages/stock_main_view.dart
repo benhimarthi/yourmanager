@@ -11,12 +11,12 @@ class StockMainView extends StatefulWidget {
 class _StockMainViewState extends State<StockMainView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth <= 768) {
         return const StockMainViewSmallScreen();
       } else {
         return Container();
       }
-    }));
+    });
   }
 }

@@ -2,14 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:yourmanager/core/errors/exceptions.dart';
 import 'package:yourmanager/core/errors/failure.dart';
 import 'package:yourmanager/features/categories/datas/data_source/product_category_remote_data_source.dart';
-import 'package:yourmanager/features/categories/domain/entities/category.dart';
 import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/categories/domain/repositories/product_category_repository.dart';
 
 import '../models/product_category.dart';
 
 class ProductCategoryRepositoryImpl extends ProductCategoryRepository {
-  final ProductCategoryRemoteDataSourceImpl _dataSourceImpl;
+  final ProductCategoryRemoteDataSource _dataSourceImpl;
   ProductCategoryRepositoryImpl(this._dataSourceImpl);
 
   @override

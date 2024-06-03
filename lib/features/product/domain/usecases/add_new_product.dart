@@ -13,9 +13,12 @@ class AddNewProduct extends UseCaseWithParam<Product, CreateProductParams> {
       params.title,
       params.description,
       params.category,
+      params.expirationDate,
+      params.barcode,
+      params.images,
       params.price,
       params.stockPrice,
-      params.images,
+      params.discount,
     );
   }
 }
@@ -24,15 +27,21 @@ class CreateProductParams {
   final String title;
   final String description;
   final String category;
+  final String expirationDate;
+  final String barcode;
+  final String images;
   final double price;
   final double stockPrice;
-  final List<String> images;
+  final double discount;
   CreateProductParams({
     required this.title,
     required this.description,
     required this.category,
+    required this.expirationDate,
+    required this.barcode,
+    required this.images,
     required this.price,
     required this.stockPrice,
-    required this.images,
+    required this.discount,
   });
 }

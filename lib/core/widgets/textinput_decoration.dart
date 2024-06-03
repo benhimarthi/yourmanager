@@ -4,7 +4,7 @@ import '../util/app_colors.dart';
 
 const textInputDecoration = InputDecoration(
   filled: true,
-  fillColor: textFieldBackgroundcolor,
+  //fillColor: textFieldBackgroundcolor,
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(
       color: onUnFocusTextFieldBorderColor,

@@ -8,9 +8,12 @@ abstract class ProductRemoteDataSrc {
     String title,
     String description,
     String category,
+    String expirationDate,
+    String barcode,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   );
   Future<Product> getProduct(String id);
   Future<List<Product>> getAllProducts();
@@ -19,9 +22,10 @@ abstract class ProductRemoteDataSrc {
     String title,
     String description,
     String category,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   );
   Future<void> removeProduct(String id);
 }
@@ -34,9 +38,12 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
     String title,
     String description,
     String category,
+    String expirationDate,
+    String barcode,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   ) async {
     try {
       DocumentReference productRef =
@@ -44,9 +51,12 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
         'title': title,
         'description': description,
         'category': category,
+        'expiration_date': expirationDate,
+        'barcode': barcode,
+        'image': image,
         'price': price,
         'stock_price': stockPrice,
-        'images': images
+        'discount': discount,
       });
       DocumentSnapshot docSnapshot = await productRef.get();
       if (docSnapshot.exists) {
@@ -107,21 +117,24 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
 
   @override
   Future<Product> updateProductInformations(
-      String id,
-      String title,
-      String description,
-      String category,
-      double price,
-      double stockPrice,
-      List<String> images) async {
+    String id,
+    String title,
+    String description,
+    String category,
+    String image,
+    double price,
+    double stockPrice,
+    double discount,
+  ) async {
     try {
       await _firebaseFirestore.collection('products').doc(id).update({
         'title': title,
         'description': description,
         'category': category,
+        'image': image,
         'price': price,
         'stock_price': stockPrice,
-        'images': images,
+        'discount': discount,
       });
       return getProduct(id);
     } on FirebaseException catch (e) {

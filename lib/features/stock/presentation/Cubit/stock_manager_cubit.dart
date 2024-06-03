@@ -27,9 +27,15 @@ class StockManagerCubit extends Cubit<StockManagerState> {
         super(const InitiateStockManager());
 
   Future<void> addItemInInventory(
-      String stockId, String productId, int quantity) async {
-    final result = await _addItemInInventory(AddItemInStockParam(
-        quantity: quantity, productId: productId, stockId: stockId));
+      String stockId, String productId, int quantity, String userId) async {
+    final result = await _addItemInInventory(
+      AddItemInStockParam(
+        quantity: quantity,
+        productId: productId,
+        stockId: stockId,
+        userId: userId,
+      ),
+    );
     result.fold(
         (failure) => emit(const ItemAddInSTockFailed(
             "A problem occured while adding item to the inventory, please try again!.")),

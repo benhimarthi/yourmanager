@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/util/change_screen_mang.dart';
 import '../../../../core/widgets/history_item.dart';
 import '../../../../core/widgets/list_view_widgets.dart';
-import 'history_view_small_screen.dart';
+import '../../../sale/presentation/pages/history_view_small_screen.dart';
 
 class BalanceSheetSmallScreen extends StatefulWidget {
   final DateTime date;

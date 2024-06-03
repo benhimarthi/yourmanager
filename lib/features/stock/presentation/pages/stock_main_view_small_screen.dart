@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yourmanager/core/widgets/list_view_widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yourmanager/core/util/change_screen_mang.dart';
+import 'package:yourmanager/features/authentication/presentation/cubit/admin/user_admin_manager_cubit.dart';
+import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
+import 'package:yourmanager/features/product/presentation/pages/add_product_view.dart';
+import 'package:yourmanager/features/stock/presentation/pages/product_manager_view_small_screen.dart';
+import '../../../authentication/presentation/pages/admin_user_manager/admin_user_manager_small_view.dart';
 
 class StockMainViewSmallScreen extends StatefulWidget {
   const StockMainViewSmallScreen({super.key});
@@ -10,163 +16,72 @@ class StockMainViewSmallScreen extends StatefulWidget {
 }
 
 class _StockMainViewSmallScreenState extends State<StockMainViewSmallScreen> {
+  bool isLoadingProducts = true;
+  bool displayReloadButton = false;
+  bool load = true;
+  int _selectedIndex = 0;
+  static final List<Widget> _widgetOptions = <Widget>[
+    productManagerViewSmallScreen(),
+    const AdminUserManagerSmallScreen(),
+  ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductManagerCubit>().getAllProducts();
+    context.read<UserAdminManagerCubit>().getAllUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * .999,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 25,
-            ),
-            productInventoryItem(),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Products"),
+        actions: const [
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Center(child: Icon(Icons.person)),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          nextScreen(context, const AddProduct());
+        },
+        child: CircleAvatar(
+          backgroundColor: Theme.of(context).primaryColor,
+          radius: 30,
+          child: const Icon(Icons.add),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+        selectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+        currentIndex: _selectedIndex,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory, size: 20),
+            label: 'Inventory',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.supervised_user_circle_sharp, size: 20),
+            label: 'Users manager',
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
     );
   }
 
-  Widget productInventoryItem(
-      {String name = "product_name product name ",
-      int quantity = 6,
-      int minQuantity = 3}) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 9,
-      //height: 90,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(255, 237, 237, 237),
-      ),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Visibility(
-                    child: GestureDetector(
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 217, 217, 217),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Visibility(
-                    child: GestureDetector(
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 217, 217, 217),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.edit,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .5,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Visibility(
-                        child: GestureDetector(
-                          child: Container(
-                            width: 54,
-                            height: 54,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 217, 217, 217),
-                              borderRadius: BorderRadius.circular(27),
-                              border: Border.all(width: 3, color: Colors.white),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.inventory,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .3,
-                        child: Text(
-                          name,
-                          style:
-                              const TextStyle(overflow: TextOverflow.ellipsis),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 5),
-                  width: 42,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'x$quantity',
-                      style: TextStyle(
-                          color: quantity <= minQuantity
-                              ? Colors.red
-                              : Colors.green),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          Visibility(
-            child: Container(
-              margin: const EdgeInsets.only(top: 15),
-              width: MediaQuery.of(context).size.width * 85,
-              height: 230,
-              color: Colors.amber,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 85,
-                    height: 77,
-                    color: const Color.fromARGB(255, 217, 217, 217),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }

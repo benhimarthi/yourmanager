@@ -5,9 +5,14 @@ import 'package:yourmanager/features/stock/domaine/entities/stock.dart';
 
 abstract class StockRemoteDataSource {
   Future<void> addItemsInStock(
-      int itemNumber, String productId, String stockId);
+    int itemNumber,
+    String productId,
+    String stockId,
+    String userId,
+  );
   Future<void> removeItemFromStock(int quantity, String stockId);
   Future<Stock> getStock(String id);
+  Future<Stock> getStockById(String id);
   Future<List<Stock>> getAllStock();
   Future<void> removeStock(String stockId);
 }
@@ -17,7 +22,11 @@ class StockRemoteDataSourceImpl extends StockRemoteDataSource {
   StockRemoteDataSourceImpl(this._firebaseFirestore);
   @override
   Future<void> addItemsInStock(
-      int itemNumber, String productId, String stockId) async {
+    int itemNumber,
+    String productId,
+    String stockId,
+    String userId,
+  ) async {
     try {
       CollectionReference stockCollection =
           _firebaseFirestore.collection('stock');
@@ -33,6 +42,7 @@ class StockRemoteDataSourceImpl extends StockRemoteDataSource {
         await _firebaseFirestore.collection("stock").add({
           'product_id': productId,
           'quantity': itemNumber,
+          'user_id': userId,
         });
       }
     } on FirebaseException catch (e) {
@@ -93,6 +103,19 @@ class StockRemoteDataSourceImpl extends StockRemoteDataSource {
   Future<void> removeStock(String stockId) async {
     try {
       await _firebaseFirestore.collection('stock').doc(stockId).delete();
+    } on FirebaseException catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
+  }
+
+  @override
+  Future<Stock> getStockById(String id) async {
+    try {
+      QuerySnapshot querySnapshot = await _firebaseFirestore
+          .collection('stock')
+          .where('user_id', isEqualTo: id)
+          .get();
+      return StockModel.fromFireStore(querySnapshot.docs.first);
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

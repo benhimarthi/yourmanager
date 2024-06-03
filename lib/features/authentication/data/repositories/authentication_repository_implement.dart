@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yourmanager/core/errors/exceptions.dart';
 import 'package:yourmanager/core/errors/failure.dart';
 import 'package:yourmanager/features/authentication/data/data_source/authentication_remote_data_source.dart';
@@ -71,6 +72,41 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   ResultFuture<Users?> getUserInformationsFromGoogle() async {
     try {
       final res = await _dataSource.getUserInformationsFromGoogle();
+      return Right(res);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<UserCredential> registerAccountWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      final res =
+          await _dataSource.createAccountWithEmailAndPassword(email, password);
+      return Right(res);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid updateUserAccount(
+    String userId,
+    String displayName,
+    String image,
+  ) {
+    // TODO: implement updateUserAccount
+    throw UnimplementedError();
+  }
+
+  @override
+  ResultFuture<UserCredential> loginWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final res = await _dataSource.loginWithEmailAndPassword(email, password);
       return Right(res);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));

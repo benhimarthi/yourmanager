@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yourmanager/core/errors/exceptions.dart';
 import 'package:yourmanager/core/errors/failure.dart';
-import 'package:yourmanager/core/util/password_hash.dart';
 import 'package:yourmanager/features/authentication/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,6 +19,14 @@ abstract class AuthenticationRemoteDataSrc {
   Future<void> updateUserInformations(UserModel user);
   Future<UserModel> registerAccountInformations(UserModel userInformations);
   Future<UserModel?> getUserInformationsFromGoogle();
+  Future<UserCredential> createAccountWithEmailAndPassword(
+    String email,
+    String password,
+  );
+  Future<UserCredential> loginWithEmailAndPassword(
+    String email,
+    String password,
+  );
 }
 
 class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
@@ -82,7 +89,9 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
       if (userSnapshot.exists) {
         await userscollection.doc(user.id).update({
           'full_name': user.fullName,
-          'passeword': hashPassword(user.password),
+          'phone_number': user.phoneNumber,
+          'image': user.image,
+          'email': user.email,
         });
       }
     } catch (e) {
@@ -107,7 +116,8 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
         await userscollection.doc(userInformations.id).set({
           'full_name': userInformations.fullName,
           'phone_number': userInformations.phoneNumber,
-          'passeword': hashPassword(userInformations.password),
+          'image': userInformations.image,
+          'email': userInformations.email,
         });
       }
       return userInformations;
@@ -136,9 +146,62 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
         return UserModel.fromFirebaseUserCredential(user);
       }
     } catch (error) {
-      print(error);
       throw FirebaseExceptions(message: error.toString(), statusCode: 404);
     }
     return null;
+  }
+
+  @override
+  Future<UserCredential> createAccountWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final isUserExist = await _firebaseFirestore
+          .collection('users')
+          .where(
+            'email',
+            isEqualTo: email,
+          )
+          .get();
+
+      if (isUserExist.docs.isNotEmpty) {
+        throw const FirebaseExceptions(
+            message: 'This user already exist!, try to log in.',
+            statusCode: 500);
+      } else {
+        UserCredential userCred =
+            await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        return userCred;
+      }
+    } catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
+  }
+
+  @override
+  Future<UserCredential> loginWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      var isUserBlackListed = await _firebaseFirestore
+          .collection('user_black_list')
+          .where('user_id', isEqualTo: userCredential.user!.uid)
+          .get();
+      if (isUserBlackListed.docs.isNotEmpty) {
+        throw const FirebaseExceptions(
+            message:
+                "Sorry, Your account has been black listed, contact the administrator to resolve this issue.",
+            statusCode: 501);
+      }
+      return userCredential;
+    } catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
   }
 }

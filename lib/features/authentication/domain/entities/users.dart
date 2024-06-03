@@ -4,22 +4,17 @@ class Users extends Equatable {
   final String id;
   final String fullName;
   final String phoneNumber;
-  final String password;
+  final String image;
+  final String email;
 
-  const Users(
-      {required this.id,
-      required this.fullName,
-      required this.phoneNumber,
-      required this.password});
-
-  const Users.empty()
-      : this(
-          id: '_empty.uid',
-          fullName: '_empty.fullName',
-          phoneNumber: '_empty.phoneNumber',
-          password: '_empty.password',
-        );
+  const Users({
+    required this.id,
+    required this.fullName,
+    required this.phoneNumber,
+    required this.image,
+    required this.email,
+  });
 
   @override
-  List<Object?> get props => [id, phoneNumber];
+  List<Object?> get props => [id];
 }

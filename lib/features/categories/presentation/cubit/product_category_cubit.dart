@@ -50,7 +50,7 @@ class ProductCategoryCubit extends Cubit<CategoryState> {
     result.fold(
         (failure) => emit(const GetAllCategoryFailed(
             "We couldn't get the categories, please try again.")),
-        (myCategories) => GetAllCategoriesSuccessfully(myCategories));
+        (myCategories) => emit(GetAllCategoriesSuccessfully(myCategories)));
   }
 
   Future<void> updateProductCategory(

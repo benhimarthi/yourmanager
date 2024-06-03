@@ -14,19 +14,24 @@ class ProductRepositoryImpl extends ProductRepository {
     String title,
     String description,
     String category,
+    String expirationDate,
+    String barcode,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   ) async {
     try {
       final result = await _productDataSrc.addNewProduct(
-        title,
-        description,
-        category,
-        price,
-        stockPrice,
-        images,
-      );
+          title,
+          description,
+          category,
+          expirationDate,
+          barcode,
+          image,
+          price,
+          stockPrice,
+          discount);
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -65,26 +70,35 @@ class ProductRepositoryImpl extends ProductRepository {
 
   @override
   ResultFuture<Product> updateProductInformations(
-      String id,
-      String title,
-      String description,
-      String category,
-      double price,
-      double stockPrice,
-      List<String> images) async {
+    String id,
+    String title,
+    String description,
+    String category,
+    String image,
+    double price,
+    double stockPrice,
+    double discount,
+  ) async {
     try {
       final result = await _productDataSrc.updateProductInformations(
         id,
         title,
         description,
         category,
+        image,
         price,
         stockPrice,
-        images,
+        discount,
       );
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
     }
+  }
+
+  @override
+  ResultFuture<Product> getProductByBarecode(String barecode) {
+    // TODO: implement getProductByBarecode
+    throw UnimplementedError();
   }
 }

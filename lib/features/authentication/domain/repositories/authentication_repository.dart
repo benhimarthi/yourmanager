@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yourmanager/core/errors/failure.dart';
 import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/authentication/domain/entities/users.dart';
@@ -14,4 +15,17 @@ abstract class AuthenticationRepository {
   ResultVoid updateUserInformations(Users user);
   ResultFuture<Users> registerAccountInformations(Users userToSave);
   ResultFuture<Users?> getUserInformationsFromGoogle();
+  ResultFuture<UserCredential> registerAccountWithEmailAndPassword(
+    String email,
+    String password,
+  );
+  ResultFuture<UserCredential> loginWithEmailAndPassword(
+    String email,
+    String password,
+  );
+  ResultVoid updateUserAccount(
+    String userId,
+    String displayName,
+    String image,
+  );
 }

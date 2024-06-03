@@ -27,18 +27,26 @@ class ProductManagerCubit extends Cubit<ProductManagerState> {
     String title,
     String description,
     String category,
+    String expirationDate,
+    String barcode,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   ) async {
-    final result = await _addNewProduct(CreateProductParams(
-      title: title,
-      description: description,
-      category: category,
-      price: price,
-      stockPrice: stockPrice,
-      images: images,
-    ));
+    final result = await _addNewProduct(
+      CreateProductParams(
+        title: title,
+        description: description,
+        category: category,
+        expirationDate: expirationDate,
+        barcode: barcode,
+        images: image,
+        price: price,
+        stockPrice: stockPrice,
+        discount: discount,
+      ),
+    );
     result.fold(
         (failure) =>
             emit(const AddAProductFailed("Sorry we couldn't add this product")),
@@ -46,7 +54,9 @@ class ProductManagerCubit extends Cubit<ProductManagerState> {
   }
 
   Future<void> getAllProducts() async {
+    emit(const GettingAllproduct());
     final result = await _getAllProducts();
+
     result.fold(
         (failure) => emit(const GetAllProductsFailed(
             "A problem occured while trying to get products.")),
@@ -66,18 +76,23 @@ class ProductManagerCubit extends Cubit<ProductManagerState> {
     String title,
     String description,
     String category,
+    String image,
     double price,
     double stockPrice,
-    List<String> images,
+    double discount,
   ) async {
-    final result = await _updateProductInfos(UpdateProductInfosParams(
+    final result = await _updateProductInfos(
+      UpdateProductInfosParams(
         id: id,
         title: title,
         description: description,
         category: category,
+        images: image,
         price: price,
         stockPrice: stockPrice,
-        images: images));
+        discount: discount,
+      ),
+    );
     result.fold(
         (failure) => emit(const UpdateProductInfosFailed(
             "Sorry! we couldn't update the informations of this product.")),
