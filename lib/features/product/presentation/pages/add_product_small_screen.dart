@@ -12,7 +12,7 @@ import 'package:yourmanager/features/img_vids/presentation/cubit/representation_
 import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
 import 'package:yourmanager/features/product/presentation/Cubit/product_manager_state.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:yourmanager/features/stock/presentation/pages/stock_main_view.dart';
+import 'package:yourmanager/features/stock/presentation/pages/admin_pages/stock_main_view.dart';
 
 import '../../../../core/widgets/custom_bottom_sheet.dart';
 import '../../../../core/widgets/custom_popup_menu.dart';
@@ -28,9 +28,9 @@ class AddProductSmallScreen extends StatefulWidget {
 class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
   String title = "";
   String description = "";
-  double mm = 0;
-  double dd = 0;
-  double yy = 0;
+  int mm = 0;
+  int dd = 0;
+  int yy = 0;
   double unitPrice = 0;
   double stockPrice = 0;
   final formKey = GlobalKey<FormState>();
@@ -69,7 +69,7 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
       ),
       options: categories,
     );
-    _imageFile = File('');
+    _imageFile = File.fromUri(Uri());
     barcode = "";
     context.read<ProductCategoryCubit>().getAllProductCategories();
   }
@@ -118,8 +118,9 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
                   margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.only(right: 20, left: 20),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                   child: const Center(
                     child: Text(
                       "Save",
@@ -247,30 +248,33 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
                             },
                             builder: (context3, state3) {
                               return Container(
-                                  margin: const EdgeInsets.all(15),
-                                  child: productCat);
+                                margin: const EdgeInsets.all(15),
+                                child: productCat,
+                              );
                             },
                           ),
                           GestureDetector(
-                              onTap: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: ((context) =>
-                                      AddProductCategoryDialog(
-                                          nameController: namecontroller)),
-                                );
-                              },
-                              child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.add,
-                                    color: Theme.of(context).primaryColor,
-                                  ))))
+                            onTap: () async {
+                              await showDialog(
+                                context: context,
+                                builder: ((context) => AddProductCategoryDialog(
+                                    nameController: namecontroller)),
+                              );
+                            },
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          )
                         ]),
                         Container(
                           margin: const EdgeInsets.all(15),
@@ -359,7 +363,7 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
                                       )),
                                   onChanged: (value) {
                                     try {
-                                      mm = double.parse(value);
+                                      mm = int.parse(value);
                                     } catch (e) {
                                       mm = 0;
                                     }
@@ -395,7 +399,7 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
                                   initialValue: DateTime.now().day.toString(),
                                   onChanged: (value) {
                                     try {
-                                      dd = double.parse(value);
+                                      dd = int.parse(value);
                                     } catch (e) {
                                       dd = 0;
                                     }
@@ -430,7 +434,7 @@ class _AddProductSmallScreenState extends State<AddProductSmallScreen> {
                                   initialValue: DateTime.now().year.toString(),
                                   onChanged: (value) {
                                     try {
-                                      yy = double.parse(value);
+                                      yy = int.parse(value);
                                     } catch (e) {
                                       yy = 0;
                                     }

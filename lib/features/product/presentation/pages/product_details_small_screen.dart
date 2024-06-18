@@ -1,12 +1,11 @@
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:flutter/material.dart';
-import 'package:line_chart/charts/line-chart.widget.dart';
-import 'package:line_chart/model/line-chart.model.dart';
 import 'package:pie_chart/pie_chart.dart';
 //import 'package:fl_chart/fl_chart.dart';
 
 class ProductDetailSmallScreen extends StatefulWidget {
-  const ProductDetailSmallScreen({super.key});
+  final String productStockId;
+  const ProductDetailSmallScreen({super.key, required this.productStockId});
 
   @override
   State<ProductDetailSmallScreen> createState() =>
@@ -60,28 +59,26 @@ class _ProductDetailSmallScreenState extends State<ProductDetailSmallScreen> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Container(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Product Name',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                                color: Colors.white),
-                          ),
-                          Text(
-                            'Barcode',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                          Text(
-                            'Expiry date',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ]),
-                  )
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Product Name',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          'Barcode',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        Text(
+                          'Expiry date',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ])
                 ],
               ),
             ),
@@ -142,7 +139,7 @@ class _ProductDetailSmallScreenState extends State<ProductDetailSmallScreen> {
                 enableGridLines: true,
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               height: 200,
               child: PieChart(

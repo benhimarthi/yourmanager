@@ -28,9 +28,19 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  ResultVoid updateUserInformations(Users user) async {
+  ResultVoid updateUserInformations(
+    String id,
+    String fullName,
+    String image,
+    String phoneNumber,
+  ) async {
     try {
-      await _dataSource.updateUserInformations(user as UserModel);
+      await _dataSource.updateUserInformations(
+        id,
+        fullName,
+        image,
+        phoneNumber,
+      );
       return const Right(null);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -111,5 +121,11 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
     }
+  }
+
+  @override
+  ResultFuture<Users> getUser(String id) {
+    // TODO: implement getUser
+    throw UnimplementedError();
   }
 }

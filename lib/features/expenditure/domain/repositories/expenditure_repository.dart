@@ -2,7 +2,7 @@ import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/expenditure/domain/entities/expenditure.dart';
 
 abstract class ExpenditureRepository {
-  ResultVoid registerExpenditure(
+  ResultFuture<String> registerExpenditure(
     String title,
     double amount,
     DateTime date,

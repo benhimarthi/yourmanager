@@ -48,15 +48,18 @@ class StockAdminCubit extends Cubit<StockAdminState> {
   }
 
   Future<void> getProductStockByProductId(String id) async {
+    emit(const IsGettingProductByProductId());
     final result = await _getProductStockByProductId(id);
     result.fold(
         (failure) => emit(const GetProductStockByProductIdFailed(
             "A problem occured while trying to get the product by product id!.")),
-        (myProductStock) =>
-            (GetProductStockByProductIdSuccessfully(myProductStock)));
+        (myProductStock) {
+      emit(GetProductStockByProductIdSuccessfully(myProductStock));
+    });
   }
 
   Future<void> getAllProductStock() async {
+    emit(const IsGettingAllProducts());
     final result = await _getAllProducts();
     result.fold(
         (failure) => emit(const GetAllProductStockFailed(
@@ -78,6 +81,7 @@ class StockAdminCubit extends Cubit<StockAdminState> {
     bool isNewUser, {
     bool isAble = true,
   }) async {
+    emit(const IsUpdatingProduct());
     final result = await _updateProductStock(UpdateProductParams(
         stockId: stockId,
         userId: userId,

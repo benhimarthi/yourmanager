@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yourmanager/core/util/int_2_month.dart';
-import 'package:yourmanager/core/widgets/small_text_format.dart';
-
+import 'package:yourmanager/core/util/current_user_informations.dart';
 import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
 import 'package:yourmanager/features/product/presentation/Cubit/product_manager_state.dart';
-
+import 'package:yourmanager/features/sale/presentation/cubit/sale_manager_cubit.dart';
 import '../../../../core/util/change_screen_mang.dart';
 import '../../../../core/widgets/custom_calendar.dart';
-import '../../../../core/widgets/history_item.dart';
 import '../../../../core/widgets/list_view_widgets.dart';
+import '../cubit/sale_manager_state.dart';
 import 'history_view_small_screen.dart';
 
 class SaleMainPageSmallScreen extends StatefulWidget {
@@ -31,6 +29,8 @@ class _SaleMainPageSmallScreenState extends State<SaleMainPageSmallScreen> {
     super.initState();
     month = 3; //date.month;
     year = date.year;
+    context.read<SaleManagerCubit>().getAllSale(userUID);
+    context.read<ProductManagerCubit>().getAllProducts();
   }
 
   @override
@@ -105,15 +105,30 @@ class _SaleMainPageSmallScreenState extends State<SaleMainPageSmallScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 210,
-                //color: Colors.amber,
-                child: ListViewWidget([
-                  historyItem(date),
-                  historyItem(date),
-                  //historyItem(date),
-                ], 4),
+              BlocConsumer<SaleManagerCubit, SaleManagerState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return state is GetAllSalesSuccessfully
+                      ? SizedBox(
+                          width: double.infinity,
+                          height: 210,
+                          //color: Colors.amber,
+                          /*child: ListViewWidget([
+                            //historyItem(date),
+                            //historyItem(date),
+                            //historyItem(date),
+                          ], 4),*/
+                        )
+                      : SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.replay),
+                            ),
+                          ),
+                        );
+                },
               )
             ],
           )),

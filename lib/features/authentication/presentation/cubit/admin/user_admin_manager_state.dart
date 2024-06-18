@@ -11,6 +11,10 @@ class UserAdminManagerInitial extends UserAdminManagerState {
   const UserAdminManagerInitial();
 }
 
+class IsGettingUser extends UserAdminManagerState {
+  const IsGettingUser();
+}
+
 class GetUserSuccessfully extends UserAdminManagerState {
   final Users myUsers;
   const GetUserSuccessfully(this.myUsers);
@@ -51,4 +55,14 @@ class DeleteUserAccountSuccessfully extends UserAdminManagerState {
 class DeleteUserAccountFailed extends UserAdminManagerState {
   final String message;
   const DeleteUserAccountFailed(this.message);
+}
+
+class GetAllBlackListedUserSuccessfully extends UserAdminManagerState {
+  final List<String> myUsers;
+  const GetAllBlackListedUserSuccessfully(this.myUsers);
+}
+
+class GetAllBlackListedUserFailed extends UserAdminManagerState {
+  final String message;
+  const GetAllBlackListedUserFailed(this.message);
 }

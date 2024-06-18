@@ -97,8 +97,12 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  ResultFuture<Product> getProductByBarecode(String barecode) {
-    // TODO: implement getProductByBarecode
-    throw UnimplementedError();
+  ResultFuture<Product> getProductByBarecode(String barecode) async {
+    try {
+      final result = await _productDataSrc.getProductByBarcode(barecode);
+      return Right(result);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/admin/black_list_user.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/admin/delete_user_account.dart';
+import 'package:yourmanager/features/authentication/domain/usecases/admin/get_all_black_lisetd_users.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/admin/get_all_users.dart';
 import 'package:yourmanager/features/authentication/domain/usecases/admin/get_user.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/admin/user_admin_manager_state.dart';
@@ -10,16 +11,19 @@ class UserAdminManagerCubit extends Cubit<UserAdminManagerState> {
   final GetAllUsers _allUsers;
   final BlackListUser _blackListUser;
   final DeleteUserAccount _deleteUserAccount;
+  final GetAllBlackListedUser _getAllBlackListedUser;
 
   UserAdminManagerCubit({
     required GetUser getUser,
     required GetAllUsers allUsers,
     required BlackListUser blackListUser,
     required DeleteUserAccount deleteUserAccount,
+    required GetAllBlackListedUser getAllBlackListedUser,
   })  : _getUser = getUser,
         _allUsers = allUsers,
         _blackListUser = blackListUser,
         _deleteUserAccount = deleteUserAccount,
+        _getAllBlackListedUser = getAllBlackListedUser,
         super(const UserAdminManagerInitial());
 
   Future<void> getUser(String id) async {
@@ -56,6 +60,15 @@ class UserAdminManagerCubit extends Cubit<UserAdminManagerState> {
       (failure) => emit(const DeleteUserAccountFailed(
           "Sorry, a problem occured while trying to delete this user account, please try later!.")),
       (user) => emit(const DeleteUserAccountSuccessfully()),
+    );
+  }
+
+  Future<void> getAllBlackListedUsers() async {
+    final result = await _getAllBlackListedUser();
+    result.fold(
+      (failure) => emit(const GetAllBlackListedUserFailed(
+          "Sorry, a problem occured while trying to get the black listed users!.")),
+      (user) => emit(GetAllBlackListedUserSuccessfully(user)),
     );
   }
 }

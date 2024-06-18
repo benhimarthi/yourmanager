@@ -8,6 +8,7 @@ class RegisterSale extends UseCaseWithParam<void, RegisterSaleParams> {
   @override
   ResultFuture<void> call(RegisterSaleParams params) {
     return _repository.registerSale(
+      params.userId,
       params.productId,
       params.quantity,
       params.date,
@@ -16,10 +17,12 @@ class RegisterSale extends UseCaseWithParam<void, RegisterSaleParams> {
 }
 
 class RegisterSaleParams {
+  final String userId;
   final String productId;
   final int quantity;
   final DateTime date;
   RegisterSaleParams({
+    required this.userId,
     required this.productId,
     required this.quantity,
     required this.date,

@@ -15,6 +15,21 @@ class ProductModel extends Product {
     required super.image,
   });
 
+  factory ProductModel.empty() {
+    return const ProductModel(
+      expirationDate: "",
+      barcode: "",
+      discount: 0.0,
+      id: "",
+      title: "",
+      description: "",
+      category: "",
+      price: 0.0,
+      stockPrice: 0.0,
+      image: "",
+    );
+  }
+
   factory ProductModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
 

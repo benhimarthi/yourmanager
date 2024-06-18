@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourmanager/core/util/change_screen_mang.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/admin/user_admin_manager_cubit.dart';
-import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
 import 'package:yourmanager/features/product/presentation/pages/add_product_view.dart';
-import 'package:yourmanager/features/stock/presentation/pages/product_manager_view_small_screen.dart';
-import '../../../authentication/presentation/pages/admin_user_manager/admin_user_manager_small_view.dart';
+import 'package:yourmanager/features/stock/presentation/pages/admin_pages/product_profile_components/product_manager_view_small_screen.dart';
+import '../../../../authentication/presentation/pages/admin_user_manager/admin_user_manager_small_view.dart';
 
 class StockMainViewSmallScreen extends StatefulWidget {
   const StockMainViewSmallScreen({super.key});
@@ -21,13 +20,12 @@ class _StockMainViewSmallScreenState extends State<StockMainViewSmallScreen> {
   bool load = true;
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    productManagerViewSmallScreen(),
+    const ProductManagerViewSmallScreen(),
     const AdminUserManagerSmallScreen(),
   ];
   @override
   void initState() {
     super.initState();
-    context.read<ProductManagerCubit>().getAllProducts();
     context.read<UserAdminManagerCubit>().getAllUsers();
   }
 

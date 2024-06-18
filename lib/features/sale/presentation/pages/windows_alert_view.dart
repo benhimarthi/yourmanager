@@ -84,7 +84,7 @@ class _MyAppsState extends State<MyApps> {
     if (!_isShowingWindow) {
       await SystemAlertWindow.sendMessageToOverlay('show system window');
       SystemAlertWindow.showSystemWindow(
-        height: 200,
+        height: 350,
         width: MediaQuery.of(context).size.width.floor(),
         gravity: SystemWindowGravity.CENTER,
         prefMode: prefMode,

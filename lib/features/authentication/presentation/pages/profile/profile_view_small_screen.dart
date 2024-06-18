@@ -1,95 +1,119 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:yourmanager/features/authentication/data/models/user_model.dart';
+import 'package:yourmanager/features/authentication/presentation/cubit/authentication_cubit.dart';
+import '../../../../../core/widgets/loading.dart';
+import '../../../../img_vids/presentation/cubit/representation_cubit.dart';
+import '../../../../img_vids/presentation/widgets/profile_image.dart';
+import '../../cubit/authentication_state.dart';
 
 class ProfileViewSmallScreen extends StatefulWidget {
-  const ProfileViewSmallScreen({super.key});
+  final String userUid;
+  const ProfileViewSmallScreen({super.key, required this.userUid});
 
   @override
   State<ProfileViewSmallScreen> createState() => _ProfileViewSmallScreenState();
 }
 
 class _ProfileViewSmallScreenState extends State<ProfileViewSmallScreen> {
+  late File? _imageFile;
+  late String imageName;
+  final picker = ImagePicker();
+  late UserModel user;
+  late ProfileImage pi;
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+        if (_imageFile!.path.isNotEmpty) {
+          context.read<RepresentationCubit>().uploadImage(_imageFile!);
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    user = UserModel(
+      id: widget.userUid,
+      fullName: '',
+      phoneNumber: '',
+      image: '',
+      email: '',
+    );
+    pi = ProfileImage(
+      user: user,
+    );
+    _imageFile = File('');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 87, 144, 171),
-        elevation: 0,
-        title: const Text('Profile'),
-        actions: [
-          GestureDetector(
-            child: Stack(
-              alignment: Alignment.center,
-              children: const [
-                CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 217, 217, 217),
-                ),
-                Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                color: const Color.fromARGB(0, 255, 193, 7),
-                height: 260,
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 87, 144, 171),
+          elevation: 0,
+          title: const Text('Profile'),
+          actions: [
+            GestureDetector(
+              child: Stack(
+                alignment: Alignment.center,
+                children: const [
+                  CircleAvatar(
+                    backgroundColor: Color.fromARGB(0, 217, 217, 217),
+                  ),
+                  Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  )
+                ],
               ),
-              Positioned(
-                top: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 1,
-                  height: 220,
-                  color: const Color.fromARGB(255, 87, 144, 171),
-                ),
-              ),
-              Positioned(
-                top: 45,
-                child: Container(
-                  width: 214,
-                  height: 214,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(107),
-                    color: const Color.fromARGB(255, 213, 213, 213),
-                    border: Border.all(color: Colors.white, width: 4),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 100,
-                child: Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22.5),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.photo_camera,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+            )
+          ],
+        ),
+        body: SizedBox(
+          child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
+            listener: (context, state) {
+              if (state is GetUserSuccessfully) {}
+            },
+            builder: (context, state) {
+              return state is GetUserSuccessfully
+                  ? Column(
+                      children: [
+                        pi,
+                      ],
+                    )
+                  : state is GettingUser
+                      ? const SizedBox(
+                          height: double.infinity,
+                          child: Center(
+                            child: LoadingColumn(
+                              message: 'Charging profile',
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: double.infinity,
+                          child: Center(
+                            child: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<AuthenticationCubit>()
+                                    .getUser(widget.userUid);
+                              },
+                              icon: const Icon(Icons.replay),
+                            ),
+                          ),
+                        );
+            },
+          ),
+        ));
   }
 }

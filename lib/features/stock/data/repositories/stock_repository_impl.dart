@@ -10,7 +10,7 @@ class StockRepositoryImpl extends StockRepository {
   final StockRemoteDataSource _dataSource;
   StockRepositoryImpl(this._dataSource);
   @override
-  ResultVoid addItemsInStock(
+  ResultFuture<String> addItemsInStock(
     int itemNumber,
     String productId,
     String stockId,
@@ -72,5 +72,54 @@ class StockRepositoryImpl extends StockRepository {
   @override
   ResultFuture<Stock> getStockByUserId(String id) {
     throw UnimplementedError();
+  }
+
+  @override
+  ResultVoid updateUserStock(
+    String id,
+    int quantity,
+    int minQuantity,
+    double stockCostPrice,
+    double costPrice,
+    double discount,
+  ) async {
+    try {
+      final result = await _dataSource.updateUserStock(
+        id,
+        quantity,
+        minQuantity,
+        stockCostPrice,
+        costPrice,
+        discount,
+      );
+      return Right(result);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid manageExpenditure(
+      String id, String expenditureId, bool add) async {
+    try {
+      final result = await _dataSource.manageExpenditures(
+        id,
+        expenditureId,
+        add,
+      );
+      return Right(result);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid setConfiguredValue(String id, bool value) async {
+    try {
+      final result = await _dataSource.setConfiguredValue(id, value);
+      return Right(result);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
   }
 }

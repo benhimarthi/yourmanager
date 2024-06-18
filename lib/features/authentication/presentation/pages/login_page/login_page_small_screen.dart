@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yourmanager/core/util/app_colors.dart';
 import 'package:yourmanager/core/util/change_screen_mang.dart';
+import 'package:yourmanager/core/util/current_user_informations.dart';
 import 'package:yourmanager/core/widgets/big_text_format.dart';
 import 'package:yourmanager/core/widgets/textinput_decoration.dart';
 import 'package:yourmanager/features/authentication/presentation/cubit/authentication_cubit.dart';
@@ -25,7 +26,7 @@ class _LoginSState extends State<LoginS> {
   bool obscurePassword = true;
   late String mailAddress = "";
   late String password = "";
-  late String? currentUserUid = "";
+  static String? currentUserUid = "";
   final formKey = GlobalKey<FormState>();
 
   registerUserUid(String uid) async {
@@ -37,15 +38,20 @@ class _LoginSState extends State<LoginS> {
   void initState() {
     super.initState();
     checkUser();
-    context.read<AuthenticationCubit>().emit(const AuthenticationInitial());
   }
 
   checkUser() async {
     try {
       SharedPreferences sf = await SharedPreferences.getInstance();
       currentUserUid = sf.getString('user_uid');
+
       if (currentUserUid != null) {
-        nextScreenReplace(context, HomePage());
+        userUID = currentUserUid!;
+        nextScreenReplace(
+            context,
+            HomePage(
+              userUid: currentUserUid!,
+            ));
       }
     } catch (e) {
       print('Error: $e');
@@ -57,16 +63,18 @@ class _LoginSState extends State<LoginS> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
-        if (state is AuthenticationInitial) {
-          print("IIIIIIIIIIIIINNNNNNNNNNNNNNNSSSSSSSSSSSSS");
-        }
         if (state is LoginWithEmailAndPasswordFailed) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.message)));
         }
         if (state is LoginWithEmailAndPasswordSuccessfully) {
-          nextScreenReplace(context, const HomePage());
           registerUserUid(state.myUser.user!.uid);
+          nextScreenReplace(
+            context,
+            HomePage(
+              userUid: state.myUser.user!.uid,
+            ),
+          );
         }
       },
       builder: (context, state) {

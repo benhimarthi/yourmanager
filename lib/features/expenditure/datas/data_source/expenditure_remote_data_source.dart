@@ -3,7 +3,7 @@ import 'package:yourmanager/core/errors/exceptions.dart';
 import 'package:yourmanager/features/expenditure/datas/models/expenditure_model.dart';
 
 abstract class ExpenditureRemoteDataSource {
-  Future<void> registerExpenditure(
+  Future<String> registerExpenditure(
     String title,
     double amount,
     DateTime date,
@@ -58,14 +58,15 @@ class ExpenditureRemoteDataSourceImpl extends ExpenditureRemoteDataSource {
   }
 
   @override
-  Future<void> registerExpenditure(
+  Future<String> registerExpenditure(
       String title, double amount, DateTime date) async {
     try {
-      await _firebaseFirestore.collection('expenditure').add({
+      var res = await _firebaseFirestore.collection('expenditure').add({
         'title': title,
         'amount': amount,
-        'date': date,
+        'date': date.toString(),
       });
+      return res.id;
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }
@@ -78,7 +79,7 @@ class ExpenditureRemoteDataSourceImpl extends ExpenditureRemoteDataSource {
       await _firebaseFirestore.collection("expenditure").doc(id).update({
         'title': title,
         'amount': amount,
-        'date': date,
+        'date': date.toString(),
       });
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);

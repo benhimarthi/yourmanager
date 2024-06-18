@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yourmanager/features/stock/presentation/pages/stock_main_view_small_screen.dart';
+import 'package:yourmanager/features/stock/presentation/pages/admin_pages/stock_main_view_small_screen.dart';
 
 class StockMainView extends StatefulWidget {
   const StockMainView({super.key});

@@ -6,6 +6,7 @@ import 'package:yourmanager/features/authentication/presentation/pages/confirm_p
 import 'package:yourmanager/features/authentication/presentation/pages/login_page/login_page.dart';
 import 'package:yourmanager/features/balance_sheet/domain/entities/balance_sheet.dart';
 import 'package:yourmanager/features/categories/presentation/cubit/product_category_cubit.dart';
+import 'package:yourmanager/features/expenditure/presentation/cubit/expenditure_cubit_manager.dart';
 import 'package:yourmanager/features/img_vids/presentation/cubit/representation_cubit.dart';
 import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
 import 'package:yourmanager/features/sale/presentation/cubit/sale_manager_cubit.dart';
@@ -13,7 +14,8 @@ import 'package:yourmanager/features/sale/presentation/pages/home_page_small_scr
 import 'package:yourmanager/features/sale/presentation/pages/sales_main_page.dart';
 import 'package:yourmanager/features/sale/presentation/pages/windows_alert_view.dart';
 import 'package:yourmanager/features/stock/presentation/Cubit/admin/stock_admin_cubit.dart';
-import 'package:yourmanager/features/stock/presentation/pages/stock_main_view.dart';
+import 'package:yourmanager/features/stock/presentation/Cubit/stock_manager_cubit.dart';
+import 'package:yourmanager/features/stock/presentation/pages/admin_pages/stock_main_view.dart';
 import 'package:yourmanager/firebase_options.dart';
 import 'core/services/injection_container.dart';
 import 'features/authentication/presentation/cubit/admin/user_admin_manager_cubit.dart';
@@ -24,7 +26,8 @@ import 'features/product/presentation/pages/add_product_view.dart';
 import 'features/balance_sheet/presentation/pages/blanace_sheet_page.dart';
 import 'features/product/presentation/pages/product_details.dart';
 import 'features/sale/presentation/pages/activities_register.dart';
-import 'features/stock/presentation/pages/product_profile_admin_small_screen.dart';
+import 'features/stock/presentation/pages/admin_pages/product_profile_components/product_profile_admin_small_screen.dart';
+import 'features/stock/presentation/pages/user/tt.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,19 +42,7 @@ Future<void> main() async {
 void overlayMain() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      debugShowCheckedModeBanner: false,
-      color: Colors.transparent,
-      home: Scaffold(
-        body: Container(
-          color: Colors.amber,
-          width: double.infinity,
-          margin: const EdgeInsets.all(20),
-          height: 100,
-        ),
-      ),
-    ),
+    const ActivitiesRegister(),
   );
 }
 
@@ -82,11 +73,20 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<StockAdminCubit>(
           create: (context) => sl<StockAdminCubit>(),
-        )
+        ),
+        BlocProvider<StockManagerCubit>(
+          create: (context) => sl<StockManagerCubit>(),
+        ),
+        BlocProvider<ExpenditureCubit>(
+          create: (context) => sl<ExpenditureCubit>(),
+        ),
+        BlocProvider<SaleManagerCubit>(
+          create: (context) => sl<SaleManagerCubit>(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: StockMainView(),
+        home: LoginPage(),
       ),
     );
   }

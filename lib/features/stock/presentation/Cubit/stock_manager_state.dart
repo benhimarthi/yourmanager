@@ -11,8 +11,13 @@ class InitiateStockManager extends StockManagerState {
   const InitiateStockManager();
 }
 
+class IsAddingItemInStock extends StockManagerState {
+  const IsAddingItemInStock();
+}
+
 class ItemAddInStockSuccessfully extends StockManagerState {
-  const ItemAddInStockSuccessfully();
+  final String stockId;
+  const ItemAddInStockSuccessfully(this.stockId);
 }
 
 class ItemAddInSTockFailed extends StockManagerState {
@@ -39,6 +44,10 @@ class GetAllStockFailed extends StockManagerState {
   const GetAllStockFailed(this.message);
 }
 
+class IsGettingStock extends StockManagerState {
+  const IsGettingStock();
+}
+
 class GetStockSuccessfully extends StockManagerState {
   final Stock stock;
   const GetStockSuccessfully(this.stock);
@@ -47,6 +56,45 @@ class GetStockSuccessfully extends StockManagerState {
 class GetStockFailed extends StockManagerState {
   final String message;
   const GetStockFailed(this.message);
+}
+
+class IsUpdatingStock extends StockManagerState {
+  const IsUpdatingStock();
+}
+
+class UpdateStockSuccessfully extends StockManagerState {
+  const UpdateStockSuccessfully();
+}
+
+class UpdateStockFailed extends StockManagerState {
+  final String message;
+  const UpdateStockFailed(this.message);
+}
+
+class IsManagingExpenditures extends StockManagerState {
+  const IsManagingExpenditures();
+}
+
+class ManageExpenditureSuccessfully extends StockManagerState {
+  const ManageExpenditureSuccessfully();
+}
+
+class ManageExpenditureFailed extends StockManagerState {
+  final String message;
+  const ManageExpenditureFailed(this.message);
+}
+
+class IsSettingUpConfiguedValue extends StockManagerState {
+  const IsSettingUpConfiguedValue();
+}
+
+class SettingConfiguredValueSuccessfully extends StockManagerState {
+  const SettingConfiguredValueSuccessfully();
+}
+
+class SettinConfiguredValueFailed extends StockManagerState {
+  final String message;
+  const SettinConfiguredValueFailed(this.message);
 }
 
 class RemoveStockSuccessfully extends StockManagerState {

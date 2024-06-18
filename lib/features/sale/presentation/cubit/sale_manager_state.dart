@@ -11,6 +11,10 @@ class InitializedSaleService extends SaleManagerState {
   const InitializedSaleService();
 }
 
+class IsRegisteringSale extends SaleManagerState {
+  const IsRegisteringSale();
+}
+
 class SaleRegisteredSuccessfully extends SaleManagerState {
   const SaleRegisteredSuccessfully();
 }
@@ -18,6 +22,10 @@ class SaleRegisteredSuccessfully extends SaleManagerState {
 class SaleRegistrationFailed extends SaleManagerState {
   final String message;
   const SaleRegistrationFailed(this.message);
+}
+
+class IsDeletingSale extends SaleManagerState {
+  const IsDeletingSale();
 }
 
 class SaleDeletedSuccessfully extends SaleManagerState {
@@ -29,6 +37,10 @@ class SaleDeletionFailed extends SaleManagerState {
   const SaleDeletionFailed(this.message);
 }
 
+class IsGettingSale extends SaleManagerState {
+  const IsGettingSale();
+}
+
 class GetSaleSuccessfully extends SaleManagerState {
   final Sale sale;
   const GetSaleSuccessfully(this.sale);
@@ -37,6 +49,10 @@ class GetSaleSuccessfully extends SaleManagerState {
 class GetSaleFailed extends SaleManagerState {
   final String message;
   const GetSaleFailed(this.message);
+}
+
+class IsGettingAllSales extends SaleManagerState {
+  const IsGettingAllSales();
 }
 
 class GetAllSalesSuccessfully extends SaleManagerState {

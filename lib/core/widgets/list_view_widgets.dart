@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-ListView ListViewWidget(List<Widget> myItems, int limit) {
+ListView listViewWidget(List<Widget> myItems, int limit, {bool all = false}) {
   return ListView(
-    children: myItems,
+    children: all ? myItems : List.generate(limit, (index) => myItems[index]),
   );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-screenSeparator() {
+screenSeparator({double w = 10}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -9,7 +9,7 @@ screenSeparator() {
         radius: 5,
       ),
       Container(
-        width: 10,
+        width: w,
         height: 2,
         color: Colors.white,
       ),
@@ -21,13 +21,13 @@ screenSeparator() {
                     right: 2,
                     left: 2,
                   ),
-                  width: 10,
+                  width: w,
                   height: 2,
                   color: Colors.white,
                 )),
       ),
       Container(
-        width: 10,
+        width: w,
         height: 2,
         color: Colors.white,
       ),

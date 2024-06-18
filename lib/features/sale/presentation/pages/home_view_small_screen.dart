@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourmanager/core/util/change_screen_mang.dart';
+import 'package:yourmanager/core/util/current_user_informations.dart';
+import 'package:yourmanager/features/product/presentation/Cubit/product_manager_cubit.dart';
+import 'package:yourmanager/features/sale/presentation/cubit/sale_manager_cubit.dart';
 import 'package:yourmanager/features/sale/presentation/pages/history_view_small_screen.dart';
-
-import '../../../../core/widgets/history_item.dart';
-import '../../../../core/widgets/list_view_widgets.dart';
+import 'package:yourmanager/features/stock/presentation/Cubit/stock_manager_cubit.dart';
+import '../../../../core/widgets/historic_displayer.dart';
 
 class HomeViewSmallScreen extends StatefulWidget {
   const HomeViewSmallScreen({super.key});
@@ -17,6 +20,13 @@ class _HomeViewSmallScreenState extends State<HomeViewSmallScreen> {
   final date = DateTime.now();
   final double amount = 250.6;
   final double pourcentage = 0.5;
+  @override
+  void initState() {
+    super.initState();
+    context.read<SaleManagerCubit>().getAllSale(userUID);
+    context.read<StockManagerCubit>().getAllStock();
+    context.read<ProductManagerCubit>().getAllProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +186,11 @@ class _HomeViewSmallScreenState extends State<HomeViewSmallScreen> {
               IconButton(
                   onPressed: () {
                     setState(() {
-                      nextScreen(context, const HistoryViewSmallScreen());
+                      nextScreen(
+                          context,
+                          HistoryViewSmallScreen(
+                            historic: historicDisplayer(all: true, date: date),
+                          ));
                     });
                   },
                   icon: const Icon(
@@ -186,16 +200,7 @@ class _HomeViewSmallScreenState extends State<HomeViewSmallScreen> {
             ],
           ),
         ),
-        SizedBox(
-          width: double.infinity,
-          height: 230,
-          //color: Colors.amber,
-          child: ListViewWidget([
-            historyItem(date),
-            historyItem(date),
-            historyItem(date),
-          ], 4),
-        )
+        historicDisplayer(date: date),
       ],
     );
   }

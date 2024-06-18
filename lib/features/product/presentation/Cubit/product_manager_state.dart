@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:yourmanager/features/product/data/models/product_models.dart';
 import 'package:yourmanager/features/product/domain/entities/product.dart';
 
 class ProductManagerState extends Equatable {
@@ -10,6 +9,34 @@ class ProductManagerState extends Equatable {
 
 class ProductManagerStateInitial extends ProductManagerState {
   const ProductManagerStateInitial();
+}
+
+class IsGettingProduct extends ProductManagerState {
+  const IsGettingProduct();
+}
+
+class GetProductByIdSuccessfully extends ProductManagerState {
+  final Product myProduct;
+  const GetProductByIdSuccessfully(this.myProduct);
+}
+
+class GetProductByIdFailed extends ProductManagerState {
+  final String message;
+  const GetProductByIdFailed(this.message);
+}
+
+class IsGettingProductByBarcode extends ProductManagerState {
+  const IsGettingProductByBarcode();
+}
+
+class GetProductByBarcodeSuccessfully extends ProductManagerState {
+  final Product myProduct;
+  const GetProductByBarcodeSuccessfully(this.myProduct);
+}
+
+class GetProductByBarcodeFailed extends ProductManagerState {
+  final String message;
+  const GetProductByBarcodeFailed(this.message);
 }
 
 class GettingAllproduct extends ProductManagerState {
@@ -53,4 +80,9 @@ class DeleteProductSuccessfully extends ProductManagerState {
 class DeleteProductFailed extends ProductManagerState {
   final String message;
   const DeleteProductFailed(this.message);
+}
+
+class EndProcess extends ProductManagerState {
+  final dynamic value;
+  const EndProcess(this.value);
 }

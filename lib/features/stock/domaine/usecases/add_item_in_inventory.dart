@@ -2,11 +2,11 @@ import 'package:yourmanager/core/usecases/usecase.dart';
 import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/stock/domaine/repositories/stock_repository.dart';
 
-class AddItemInInventory extends UseCaseWithParam<void, AddItemInStockParam> {
+class AddItemInInventory extends UseCaseWithParam<String, AddItemInStockParam> {
   final StockRepository _repository;
   AddItemInInventory(this._repository);
   @override
-  ResultFuture<void> call(AddItemInStockParam params) {
+  ResultFuture<String> call(AddItemInStockParam params) {
     return _repository.addItemsInStock(
         params.quantity, params.productId, params.stockId, params.userId);
   }

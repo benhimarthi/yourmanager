@@ -52,4 +52,14 @@ class UserAdminManagerRepositoryImpl extends UserAdminManagerRepository {
       return Left(FirebaseFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<List<String>> getAllBlackLisetdUser() async {
+    try {
+      final u = await _dataSource.getAllBlackLisetdUser();
+      return Right(u);
+    } on FirebaseExceptions catch (e) {
+      return Left(FirebaseFailure.fromException(e));
+    }
+  }
 }

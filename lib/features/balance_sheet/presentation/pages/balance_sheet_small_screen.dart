@@ -102,9 +102,9 @@ class _BalanceSheetSmallScreenState extends State<BalanceSheetSmallScreen> {
                 width: double.infinity,
                 height: 210,
                 //color: Colors.amber,
-                child: ListViewWidget([
-                  historyItem(widget.date),
-                  historyItem(widget.date),
+                child: listViewWidget([
+                  /*historyItem(widget.date),
+                  historyItem(widget.date),*/
                   //historyItem(date),
                 ], 4),
               )

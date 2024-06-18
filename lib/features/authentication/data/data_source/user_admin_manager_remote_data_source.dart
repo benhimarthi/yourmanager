@@ -9,6 +9,7 @@ abstract class UserAdminManagerRemoteDataSource {
   Future<List<Users>> getAllUsers();
   Future<void> blacklistUser(String id);
   Future<void> deleteUserAccount(String id);
+  Future<List<String>> getAllBlackLisetdUser();
 }
 
 class UserAdminManagerRemoteDataSourceImpl
@@ -50,8 +51,7 @@ class UserAdminManagerRemoteDataSourceImpl
       List<Users> result = [];
       final myUsersDocs = await _firebaseFirestore.collection('users').get();
       for (var n in myUsersDocs.docs) {
-        Map<String, dynamic> data = n as Map<String, dynamic>;
-        result.add(UserModel.fromMap(data));
+        result.add(UserModel.fromFirebaseFirestore(n));
       }
       return result;
     } catch (e) {
@@ -62,9 +62,25 @@ class UserAdminManagerRemoteDataSourceImpl
   @override
   Future<Users> getUser(String id) async {
     try {
-      var myUserDoc = _firebaseFirestore.collection('users').doc(id);
-      var asMap = myUserDoc as Map<String, dynamic>;
-      return UserModel.fromMap(asMap);
+      var myUserDoc =
+          await _firebaseFirestore.collection('users').doc(id).get();
+      return UserModel.fromFirebaseFirestore(myUserDoc);
+    } catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
+  }
+
+  @override
+  Future<List<String>> getAllBlackLisetdUser() async {
+    try {
+      List<String> myBlackListedUser = [];
+      final result =
+          await _firebaseFirestore.collection('user_black_list').get();
+      for (var n in result.docs) {
+        Map<String, dynamic> dt = n.data();
+        myBlackListedUser.add(dt['user_id']);
+      }
+      return myBlackListedUser;
     } catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

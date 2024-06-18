@@ -36,20 +36,24 @@ class _ConfirmPhoneNumberSmallScreenState
               child: const BigText(content: 'Phone number checking'),
             ),
             SizedBox(
-                width: double.infinity,
-                child: Text.rich(TextSpan(
-                    text: "we have send you an SMS with a confirmation code"
-                        " to this number: ",
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "${widget.number}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: textColor1,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()..onTap = () {})
-                    ],
-                    style: const TextStyle(color: textColor1)))),
+              width: double.infinity,
+              child: Text.rich(
+                TextSpan(
+                  text: "we have send you an SMS with a confirmation code"
+                      " to this number: ",
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: "${widget.number}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: textColor1,
+                            decoration: TextDecoration.underline),
+                        recognizer: TapGestureRecognizer()..onTap = () {})
+                  ],
+                  style: const TextStyle(color: textColor1),
+                ),
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),

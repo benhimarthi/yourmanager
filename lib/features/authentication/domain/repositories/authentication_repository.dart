@@ -12,7 +12,12 @@ abstract class AuthenticationRepository {
   );
   ResultFuture<Users> login(
       String verificationId, String smsCode, String password);
-  ResultVoid updateUserInformations(Users user);
+  ResultVoid updateUserInformations(
+    String id,
+    String fullName,
+    String image,
+    String phoneNumber,
+  );
   ResultFuture<Users> registerAccountInformations(Users userToSave);
   ResultFuture<Users?> getUserInformationsFromGoogle();
   ResultFuture<UserCredential> registerAccountWithEmailAndPassword(
@@ -28,4 +33,5 @@ abstract class AuthenticationRepository {
     String displayName,
     String image,
   );
+  ResultFuture<Users> getUser(String id);
 }

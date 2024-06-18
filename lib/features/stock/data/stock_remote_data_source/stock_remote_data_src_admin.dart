@@ -18,10 +18,10 @@ abstract class StockRemoteDataSourceAdmin {
   });
 }
 
-class StockRemoteDataSourceImpl extends StockRemoteDataSourceAdmin {
+class StockRemoteDataSourceAdminImpl extends StockRemoteDataSourceAdmin {
   final FirebaseFirestore _firebaseFirestore;
 
-  StockRemoteDataSourceImpl(this._firebaseFirestore);
+  StockRemoteDataSourceAdminImpl(this._firebaseFirestore);
   @override
   Future<void> createNewProductStock(String productId) async {
     try {
@@ -73,6 +73,11 @@ class StockRemoteDataSourceImpl extends StockRemoteDataSourceAdmin {
           .collection('stock_admin')
           .where('product_id', isEqualTo: id)
           .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        throw const FirebaseExceptions(
+            message: "No stock for this element.", statusCode: 200);
+      }
       return StockModelAdmin.fromFireStore(querySnapshot.docs.first);
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
@@ -95,7 +100,7 @@ class StockRemoteDataSourceImpl extends StockRemoteDataSourceAdmin {
       DocumentSnapshot myStock =
           await _firebaseFirestore.collection('stock_admin').doc(stockId).get();
       var myData = myStock.data() as Map;
-      List<String> myUser = myData['users_id'] as List<String>;
+      List myUser = myData['users_id'];
       if (isNewUser) {
         if (userId.isNotEmpty) {
           if (!myUser.contains(userId)) {

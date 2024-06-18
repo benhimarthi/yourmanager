@@ -14,7 +14,7 @@ class StockModelAdmin extends StockAdmin {
     return StockModelAdmin(
       id: doc.id,
       productId: data['product_id'] ?? '',
-      usersId: data['user_id'] ?? '',
+      usersId: data['users_id'],
       isAble: data['is_able'] ?? true,
     );
   }

@@ -18,7 +18,7 @@ class RepresentationRemoteDataSourceImpl
   @override
   Future<void> deleteImage(String imagePath) async {
     try {
-      final ref = _firebaseStorage.ref().child(imagePath);
+      final ref = _firebaseStorage.ref().child('images/$imagePath');
       ref.delete();
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(
@@ -33,8 +33,7 @@ class RepresentationRemoteDataSourceImpl
       final imageUrl = await ref.getDownloadURL();
       return imageUrl;
     } on FirebaseException catch (e) {
-      throw FirebaseExceptions(
-          message: e.message.toString(), statusCode: int.parse(e.code));
+      throw FirebaseExceptions(message: e.message.toString(), statusCode: 404);
     }
   }
 
@@ -47,7 +46,7 @@ class RepresentationRemoteDataSourceImpl
       UploadTask uploadTask = storageReference.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask;
       taskSnapshot.ref.getDownloadURL().then((value) {});
-      return filename;
+      return await storageReference.getDownloadURL();
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

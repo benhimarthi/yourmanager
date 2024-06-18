@@ -24,12 +24,18 @@ class SaleManagerCubit extends Cubit<SaleManagerState> {
         super(const InitializedSaleService());
 
   Future<void> registerSale(
+    String userId,
     String productId,
     int quantity,
     DateTime date,
   ) async {
+    emit(const IsRegisteringSale());
     final result = await _registerSale(RegisterSaleParams(
-        productId: productId, quantity: quantity, date: date));
+      userId: userId,
+      productId: productId,
+      quantity: quantity,
+      date: date,
+    ));
     result.fold(
         (failure) => emit(const SaleRegistrationFailed(
             "Something went wrong while registrating your sale, please try again.")),
@@ -37,15 +43,17 @@ class SaleManagerCubit extends Cubit<SaleManagerState> {
   }
 
   Future<void> getSale(String saleId) async {
-    final result = await _getSale(saleId);
+    emit(const IsGettingSale());
+    final result = await _getSale(GetSaleParams(saleId, ''));
     result.fold(
         (failure) => emit(const GetSaleFailed(
             "Something went wrong while trying to get the Sale item.")),
         (sale) => emit(GetSaleSuccessfully(sale)));
   }
 
-  Future<void> getAllSale() async {
-    final result = await _getAllSale();
+  Future<void> getAllSale(String userID) async {
+    emit(const IsGettingAllSales());
+    final result = await _getAllSale(userID);
     result.fold(
         (failure) => emit(const GetSaleFailed(
             "Something went wrong while trying to get the Sales.")),
@@ -53,7 +61,8 @@ class SaleManagerCubit extends Cubit<SaleManagerState> {
   }
 
   Future<void> deleteSale(String id) async {
-    final result = await _deleteSale(id);
+    emit(const IsDeletingSale());
+    final result = await _deleteSale(DeleteSaleParam(id, ''));
     result.fold(
         (failure) => emit(const SaleDeletionFailed(
             "we couldn't remove this item, please try again.")),

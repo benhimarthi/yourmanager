@@ -14,6 +14,7 @@ class CustomCalandar extends StatefulWidget {
 class _CustomCalandarState extends State<CustomCalandar> {
   int day = -1;
   List<int> daysInMoth = [];
+  List<int> selectedDays = [];
   final date = DateTime.now();
   late int month;
   late int year;
@@ -208,6 +209,7 @@ class _CustomCalandarState extends State<CustomCalandar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(8, (index) {
+        print(selectedDays);
         if (index >= 1 && day < daysInMoth.length - 1) {
           day += 1;
         }
@@ -232,50 +234,45 @@ class _CustomCalandarState extends State<CustomCalandar> {
                     margin: const EdgeInsets.only(top: 5, bottom: 5),
                     width: 40,
                     height: 40,
+                    //color: Colors.amber,
                   );
       }),
     );
   }
 
   Widget repr(String day, bool isToday) {
-    return !isToday
-        ? GestureDetector(
-            onTap: () {
-              nextScreen(context, BalanceSheetPage());
-            },
-            child: Container(
-              width: 40,
-              height: 40,
-              margin: const EdgeInsets.only(top: 5, bottom: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Center(
-                  child: SmallText(
-                content: day,
-                color: Theme.of(context).primaryColor,
-              )),
-            ),
-          )
-        : GestureDetector(
-            onTap: () {
-              nextScreen(context, BalanceSheetPage());
-            },
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Visibility(
+            visible: selectedDays.contains(int.parse(day)),
+            child: const CircleAvatar(
+              radius: 23,
+            )),
+        !isToday
+            ? GestureDetector(
+                onTap: () {
+                  //nextScreen(context, BalanceSheetPage());
+                },
+                onLongPress: () {
+                  print("IIIIIIIIIIIIIIIIIIIIIIII");
+                  if (selectedDays.contains(int.parse(day))) {
+                    setState(() {
+                      selectedDays
+                          .removeWhere((element) => element == int.parse(day));
+                      this.day = -1;
+                    });
+                  } else {
+                    setState(() {
+                      selectedDays.add(int.parse(day));
+                      this.day = -1;
+                    });
+                  }
+                },
+                child: Container(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                ),
-                Container(
-                  width: 25,
-                  height: 25,
+                  margin: const EdgeInsets.only(top: 5, bottom: 5),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -285,9 +282,40 @@ class _CustomCalandarState extends State<CustomCalandar> {
                     content: day,
                     color: Theme.of(context).primaryColor,
                   )),
-                )
-              ],
-            ),
-          );
+                ),
+              )
+            : GestureDetector(
+                onTap: () {
+                  //nextScreen(context, BalanceSheetPage());
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                    ),
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                          child: SmallText(
+                        content: day,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                    )
+                  ],
+                ),
+              ),
+      ],
+    );
   }
 }

@@ -5,6 +5,8 @@ import 'package:yourmanager/features/authentication/data/models/user_model.dart'
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../domain/entities/users.dart';
+
 abstract class AuthenticationRemoteDataSrc {
   Future<UserModel> login(
       String verificationId, String smsCode, String password);
@@ -16,7 +18,12 @@ abstract class AuthenticationRemoteDataSrc {
     Function(String) onVerificationCompleted,
   );
 
-  Future<void> updateUserInformations(UserModel user);
+  Future<void> updateUserInformations(
+    String id,
+    String fullName,
+    String image,
+    String phoneNumber,
+  );
   Future<UserModel> registerAccountInformations(UserModel userInformations);
   Future<UserModel?> getUserInformationsFromGoogle();
   Future<UserCredential> createAccountWithEmailAndPassword(
@@ -27,6 +34,7 @@ abstract class AuthenticationRemoteDataSrc {
     String email,
     String password,
   );
+  Future<UserModel> getUser(String id);
 }
 
 class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
@@ -77,25 +85,33 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
   }
 
   @override
-  Future<void> updateUserInformations(UserModel user) async {
+  Future<void> updateUserInformations(
+    String id,
+    String fullName,
+    String image,
+    String phoneNumber,
+  ) async {
     try {
       //Access the firestore collection for users
       CollectionReference userscollection =
           _firebaseFirestore.collection("users");
-
       //check if user already exist in Firestore
-      DocumentSnapshot userSnapshot = await userscollection.doc(user.id).get();
+      DocumentSnapshot userSnapshot = await userscollection.doc(id).get();
 
       if (userSnapshot.exists) {
-        await userscollection.doc(user.id).update({
-          'full_name': user.fullName,
-          'phone_number': user.phoneNumber,
-          'image': user.image,
-          'email': user.email,
+        var myData = userSnapshot.data() as Map<String, dynamic>;
+        await userscollection.doc(id).update({
+          'full_name': fullName.isNotEmpty ? fullName : myData['full_name'],
+          'phone_number':
+              phoneNumber.isNotEmpty ? phoneNumber : myData['phone_number'],
+          'image': image.isNotEmpty ? image : myData['image'],
         });
       }
     } catch (e) {
-      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+      throw FirebaseExceptions(
+        message: e.toString(),
+        statusCode: 404,
+      );
     }
   }
 
@@ -200,6 +216,17 @@ class AuthenticationRemoteDataSrcImpl extends AuthenticationRemoteDataSrc {
             statusCode: 501);
       }
       return userCredential;
+    } catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
+  }
+
+  @override
+  Future<UserModel> getUser(String id) async {
+    try {
+      var myUserDoc =
+          await _firebaseFirestore.collection('users').doc(id).get();
+      return UserModel.fromFirebaseFirestore(myUserDoc);
     } catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

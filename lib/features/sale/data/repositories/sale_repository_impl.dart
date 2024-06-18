@@ -11,9 +11,9 @@ class SaleRepositoryImpl extends SaleRepository {
   SaleRepositoryImpl(this._dataSource);
 
   @override
-  ResultVoid deleteSale(String id) async {
+  ResultVoid deleteSale(String userId, String id) async {
     try {
-      final result = await _dataSource.deleteSale(id);
+      final result = await _dataSource.deleteSale(userId, id);
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -21,9 +21,9 @@ class SaleRepositoryImpl extends SaleRepository {
   }
 
   @override
-  ResultFuture<List<Sale>> getAllSales() async {
+  ResultFuture<List<Sale>> getAllSales(String userId) async {
     try {
-      final result = await _dataSource.getAllSales();
+      final result = await _dataSource.getAllSales(userId);
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -31,9 +31,9 @@ class SaleRepositoryImpl extends SaleRepository {
   }
 
   @override
-  ResultFuture<Sale> getSale(String saleId) async {
+  ResultFuture<Sale> getSale(String userId, String saleId) async {
     try {
-      final result = await _dataSource.getSale(saleId);
+      final result = await _dataSource.getSale(userId, saleId);
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));
@@ -41,9 +41,15 @@ class SaleRepositoryImpl extends SaleRepository {
   }
 
   @override
-  ResultVoid registerSale(String productId, int quantity, DateTime date) async {
+  ResultVoid registerSale(
+    String userId,
+    String productId,
+    int quantity,
+    DateTime date,
+  ) async {
     try {
-      final result = await _dataSource.registerSale(productId, quantity, date);
+      final result =
+          await _dataSource.registerSale(userId, productId, quantity, date);
       return Right(result);
     } on FirebaseExceptions catch (e) {
       return Left(FirebaseFailure.fromException(e));

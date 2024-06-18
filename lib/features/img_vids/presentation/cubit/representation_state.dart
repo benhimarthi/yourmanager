@@ -20,6 +20,10 @@ class ImageUploadFailed extends RepresentationState {
   const ImageUploadFailed(this.message);
 }
 
+class IsGettingTheImage extends RepresentationState {
+  const IsGettingTheImage();
+}
+
 class GetImageSuccessfully extends RepresentationState {
   final String imageLink;
   const GetImageSuccessfully(this.imageLink);
@@ -37,4 +41,9 @@ class DeleteImageSuccessfully extends RepresentationState {
 class DeleteImageFailed extends RepresentationState {
   final String message;
   const DeleteImageFailed(this.message);
+}
+
+class IsTaskDone extends RepresentationState {
+  final dynamic value;
+  const IsTaskDone(this.value);
 }

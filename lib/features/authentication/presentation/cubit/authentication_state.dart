@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:yourmanager/features/authentication/data/models/user_model.dart';
 import 'package:yourmanager/features/authentication/domain/entities/users.dart';
 
 class AuthenticationState extends Equatable {
@@ -104,4 +105,32 @@ class LoginWithEmailAndPasswordSuccessfully extends AuthenticationState {
 class LoginWithEmailAndPasswordFailed extends AuthenticationState {
   final String message;
   const LoginWithEmailAndPasswordFailed(this.message);
+}
+
+class GettingUser extends AuthenticationState {
+  const GettingUser();
+}
+
+class GetUserSuccessfully extends AuthenticationState {
+  final UserModel myUser;
+  const GetUserSuccessfully(this.myUser);
+}
+
+class GetUserFailed extends AuthenticationState {
+  final String message;
+  const GetUserFailed(this.message);
+}
+
+class UpdateUserSuccessfully extends AuthenticationState {
+  const UpdateUserSuccessfully();
+}
+
+class UpdateUserFailed extends AuthenticationState {
+  final String message;
+  const UpdateUserFailed(this.message);
+}
+
+class Charged extends AuthenticationState {
+  final String dt;
+  const Charged(this.dt);
 }

@@ -66,15 +66,18 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
         );
       },
       child: Container(
-          width: widget.w,
-          height: widget.h,
-          decoration: widget.buttonBoxDecoration,
-          child: Center(
-            child: Text(
-              currentOption,
-              style: TextStyle(color: Theme.of(context).primaryColor),
+        width: widget.w,
+        height: widget.h,
+        decoration: widget.buttonBoxDecoration,
+        child: Center(
+          child: Text(
+            currentOption,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

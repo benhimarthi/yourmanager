@@ -30,6 +30,7 @@ class ExpenditureCubit extends Cubit<ExpenditureStateManager> {
     double amount,
     DateTime date,
   ) async {
+    emit(const IsRegisteringExpenditure());
     final result = await _registerExpenditure(RegisterExpenditureParams(
       title: title,
       amount: amount,
@@ -38,11 +39,12 @@ class ExpenditureCubit extends Cubit<ExpenditureStateManager> {
     result.fold(
       (failure) => emit(const ExpenditureRegisteredFailed(
           'A problem occured while trying to registered the expenditure.')),
-      (_) => const ExpenditureRegisteredSuccessfully(),
+      (id) => emit(ExpenditureRegisteredSuccessfully(id)),
     );
   }
 
   Future<void> getExpenditure(String id) async {
+    emit(const IsGettingExpenditure());
     final result = await _getExpenditure(id);
     result.fold(
         (failure) => emit(
@@ -51,11 +53,14 @@ class ExpenditureCubit extends Cubit<ExpenditureStateManager> {
   }
 
   Future<void> getAllExpenditures() async {
+    emit(const IsGettingAllExpenditures());
     final result = await _getAllExpenditure();
     result.fold(
         (failure) => emit(const GetAllExpenditureFailed(
             "A problem occured while trying to get expenditures, please try againt.")),
-        (expenditures) => emit(GetAllExpenditureSuccessfully(expenditures)));
+        (expenditures) {
+      emit(GetAllExpenditureSuccessfully(expenditures));
+    });
   }
 
   Future<void> updateExpenditure(
@@ -64,6 +69,7 @@ class ExpenditureCubit extends Cubit<ExpenditureStateManager> {
     double amount,
     DateTime date,
   ) async {
+    emit(const IsUpdatingExpenditure());
     final result = await _updateExpenditure(UpdateExpenditureParam(
       id: id,
       title: title,
@@ -77,6 +83,7 @@ class ExpenditureCubit extends Cubit<ExpenditureStateManager> {
   }
 
   Future<void> deleteExpenditure(String id) async {
+    emit(const IsDeletingExpenditure());
     final result = await _deleteExpenditure(id);
     result.fold(
         (failure) => emit(const DeleteExpenditureFailed(

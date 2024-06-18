@@ -20,7 +20,7 @@ class _NotificationViewSmallScreenState
       appBar: AppBar(
         title: const Text('Notifications'),
       ),
-      body: ListViewWidget([notificationItem(DateTime.now())], 10),
+      body: listViewWidget([notificationItem(DateTime.now())], 10),
     );
   }
 }

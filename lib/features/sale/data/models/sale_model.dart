@@ -7,11 +7,14 @@ class SaleModel extends Sale {
     required super.productId,
     required super.quantity,
     required super.date,
+    required super.userId,
   });
+
   factory SaleModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
     return SaleModel(
       id: doc.id,
+      userId: data['user_id'] ?? '',
       productId: data['product_id'] ?? '',
       quantity: data['quantity'] ?? 0,
       date: DateTime.parse(data['date'] ?? ""),

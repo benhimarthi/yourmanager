@@ -11,13 +11,22 @@ class ExpenditureInitialState extends ExpenditureStateManager {
   const ExpenditureInitialState();
 }
 
+class IsRegisteringExpenditure extends ExpenditureStateManager {
+  const IsRegisteringExpenditure();
+}
+
 class ExpenditureRegisteredSuccessfully extends ExpenditureStateManager {
-  const ExpenditureRegisteredSuccessfully();
+  final String expenditureId;
+  const ExpenditureRegisteredSuccessfully(this.expenditureId);
 }
 
 class ExpenditureRegisteredFailed extends ExpenditureStateManager {
   final String message;
   const ExpenditureRegisteredFailed(this.message);
+}
+
+class IsGettingExpenditure extends ExpenditureStateManager {
+  const IsGettingExpenditure();
 }
 
 class GetExpenditureSuccessfully extends ExpenditureStateManager {
@@ -30,6 +39,10 @@ class GetExpenditureFailed extends ExpenditureStateManager {
   const GetExpenditureFailed(this.message);
 }
 
+class IsGettingAllExpenditures extends ExpenditureStateManager {
+  const IsGettingAllExpenditures();
+}
+
 class GetAllExpenditureSuccessfully extends ExpenditureStateManager {
   final List<Expenditure> expenditures;
   const GetAllExpenditureSuccessfully(this.expenditures);
@@ -40,6 +53,10 @@ class GetAllExpenditureFailed extends ExpenditureStateManager {
   const GetAllExpenditureFailed(this.message);
 }
 
+class IsUpdatingExpenditure extends ExpenditureStateManager {
+  const IsUpdatingExpenditure();
+}
+
 class UpdateExpenditureSuccessfully extends ExpenditureStateManager {
   const UpdateExpenditureSuccessfully();
 }
@@ -47,6 +64,10 @@ class UpdateExpenditureSuccessfully extends ExpenditureStateManager {
 class UpdateExpenditureFailed extends ExpenditureStateManager {
   final String message;
   const UpdateExpenditureFailed(this.message);
+}
+
+class IsDeletingExpenditure extends ExpenditureStateManager {
+  const IsDeletingExpenditure();
 }
 
 class DeleteExpenditureSuccessfully extends ExpenditureStateManager {

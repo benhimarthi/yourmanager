@@ -3,11 +3,11 @@ import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/expenditure/domain/repositories/expenditure_repository.dart';
 
 class RegisterExpenditure
-    extends UseCaseWithParam<void, RegisterExpenditureParams> {
+    extends UseCaseWithParam<String, RegisterExpenditureParams> {
   final ExpenditureRepository _repository;
   RegisterExpenditure(this._repository);
   @override
-  ResultFuture<void> call(RegisterExpenditureParams params) {
+  ResultFuture<String> call(RegisterExpenditureParams params) {
     return _repository.registerExpenditure(
       params.title,
       params.amount,

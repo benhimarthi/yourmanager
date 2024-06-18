@@ -31,6 +31,10 @@ class GetProductStockFailed extends StockAdminState {
   const GetProductStockFailed(this.message);
 }
 
+class IsGettingProductByProductId extends StockAdminState {
+  const IsGettingProductByProductId();
+}
+
 class GetProductStockByProductIdSuccessfully extends StockAdminState {
   final StockAdmin myProduct;
   const GetProductStockByProductIdSuccessfully(this.myProduct);
@@ -39,6 +43,10 @@ class GetProductStockByProductIdSuccessfully extends StockAdminState {
 class GetProductStockByProductIdFailed extends StockAdminState {
   final String message;
   const GetProductStockByProductIdFailed(this.message);
+}
+
+class IsGettingAllProducts extends StockAdminState {
+  const IsGettingAllProducts();
 }
 
 class GetAllProductStockSuccessfully extends StockAdminState {
@@ -58,6 +66,10 @@ class RemoveProductStockSuccessfully extends StockAdminState {
 class RemoveProductStockFailed extends StockAdminState {
   final String message;
   const RemoveProductStockFailed(this.message);
+}
+
+class IsUpdatingProduct extends StockAdminState {
+  const IsUpdatingProduct();
 }
 
 class UpdateProductSuccessfully extends StockAdminState {

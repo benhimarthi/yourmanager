@@ -17,10 +17,13 @@ class AdminUserManagerSmallScreen extends StatefulWidget {
 
 class _AdminUserManagerSmallScreenState
     extends State<AdminUserManagerSmallScreen> {
+  late List<String> blackListedUsers;
   @override
   void initState() {
     super.initState();
+    blackListedUsers = [];
     context.read<UserAdminManagerCubit>().getAllUsers();
+    context.read<UserAdminManagerCubit>().getAllBlackListedUsers();
   }
 
   @override
@@ -29,9 +32,12 @@ class _AdminUserManagerSmallScreenState
       builder: (context, state) {
         return SingleChildScrollView(
           child: state is IsGettingTheUsers
-              ? const Center(
-                  child: LoadingColumn(
-                    message: 'Charging Users',
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: const Center(
+                    child: LoadingColumn(
+                      message: 'Charging Users',
+                    ),
                   ),
                 )
               : state is GetAllUsersSuccessfully
@@ -52,21 +58,48 @@ class _AdminUserManagerSmallScreenState
         );
       },
       listener: (context, state) {
-        if (state is GetAllUsersFailed) {
-          print(state.message);
+        if (state is GetAllUsersFailed) {}
+        if (state is GetAllBlackListedUserSuccessfully) {
+          print("We got all the black listed user.");
+          blackListedUsers = state.myUsers;
         }
       },
     );
   }
-}
 
-Widget userItem(Users user) {
-  return ListTile(
-    title: Text(user.fullName),
-    subtitle: Text(user.email),
-    leading: CCircleAvatar(
-      icon: Icons.person,
-      imagePath: user.image,
-    ),
-  );
+  Widget userItem(Users user) {
+    return GestureDetector(
+      onTap: () {},
+      child: ListTile(
+        title: Text(
+          user.fullName,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
+          ),
+        ),
+        subtitle: Text(
+          user.email,
+          style: const TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+        ),
+        leading: CCircleAvatar(
+          icon: Icons.person,
+          imagePath: user.image,
+        ),
+        trailing: blackListedUsers.contains(user.id)
+            ? const Text(
+                'Blocked',
+                style: TextStyle(color: Colors.red),
+              )
+            : const Text(
+                'Active',
+                style: TextStyle(color: Colors.green),
+              ),
+      ),
+    );
+  }
 }

@@ -26,135 +26,139 @@ class _ActivitiesRegisterState extends State<ActivitiesRegister> {
             )
           ],
         ),
-        body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .9,
-                  height: 52,
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                  child: Center(
-                      child: Text(
-                    'Register Cell',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor),
-                  )),
+        body: SingleChildScrollView(
+          child: Container(
+            //color: Colors.red,
+            width: double.infinity,
+            height: 450,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              Visibility(
-                visible: false,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .9,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 217, 217, 217),
+                GestureDetector(
+                  child: Container(
+                    width: double.infinity,
+                    height: 52,
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 255, 255, 255)),
+                    child: Center(
+                        child: Text(
+                      'Register Cell',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
+                    )),
                   ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                          width: 160,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  scanBarcodeNormal();
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: const [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor:
-                                          Color.fromARGB(159, 255, 255, 255),
-                                    ),
-                                    CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 255, 255),
-                                      child: Center(
-                                          child:
-                                              Icon(Icons.qr_code_2_outlined)),
-                                    ),
-                                  ],
+                ),
+                Visibility(
+                  visible: false,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 217, 217, 217),
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                            width: 160,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    scanBarcodeNormal();
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: const [
+                                      CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor:
+                                            Color.fromARGB(159, 255, 255, 255),
+                                      ),
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        child: Center(
+                                            child:
+                                                Icon(Icons.qr_code_2_outlined)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Text('scan barecode')
-                            ],
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 150,
-                          child: ListView(
-                              padding: const EdgeInsets.all(5),
-                              scrollDirection: Axis.horizontal,
-                              children: [item(), item(), item(), item()])),
-                    ],
+                                const Text('scan barecode')
+                              ],
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                            width: double.infinity,
+                            height: 150,
+                            child: ListView(
+                                padding: const EdgeInsets.all(5),
+                                scrollDirection: Axis.horizontal,
+                                children: [item(), item(), item(), item()])),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .9,
-                  height: 52,
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                  child: Center(
-                      child: Text(
-                    'Register Expense',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor),
-                  )),
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              Visibility(
-                visible: true,
-                child: Container(
-                  padding: EdgeInsets.all(15),
-                  width: MediaQuery.of(context).size.width * .9,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 217, 217, 217),
-                  ),
-                  child: Column(
-                    children: const [
-                      TextField(
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Expense title'),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Amount'),
-                      )
-                    ],
+                GestureDetector(
+                  child: Container(
+                    width: double.infinity,
+                    height: 52,
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 255, 255, 255)),
+                    child: Center(
+                        child: Text(
+                      'Register Expense',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
+                    )),
                   ),
                 ),
-              ),
-            ],
+                Visibility(
+                  visible: true,
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 217, 217, 217),
+                    ),
+                    child: Column(
+                      children: const [
+                        TextField(
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Expense title'),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Amount'),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

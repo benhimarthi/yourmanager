@@ -16,6 +16,7 @@ abstract class ProductRemoteDataSrc {
     double discount,
   );
   Future<Product> getProduct(String id);
+  Future<Product> getProductByBarcode(String barcode);
   Future<List<Product>> getAllProducts();
   Future<Product> updateProductInformations(
     String id,
@@ -93,7 +94,8 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
           await _firebaseFirestore.collection('products').doc(id).get();
 
       if (docSnapshot.exists) {
-        return ProductModel.fromFirestore(docSnapshot);
+        var myP = ProductModel.fromFirestore(docSnapshot);
+        return myP;
       } else {
         throw const FirebaseExceptions(
             message: "The product you are looking for doesn't exist.",
@@ -137,6 +139,24 @@ class ProductRemoteDataScrImpl implements ProductRemoteDataSrc {
         'discount': discount,
       });
       return getProduct(id);
+    } on FirebaseException catch (e) {
+      throw FirebaseExceptions(message: e.toString(), statusCode: 404);
+    }
+  }
+
+  @override
+  Future<Product> getProductByBarcode(String barcode) async {
+    try {
+      final myProduct = await _firebaseFirestore
+          .collection('products')
+          .where('barcode', isEqualTo: barcode)
+          .get();
+      if (myProduct.docs.isEmpty) {
+        throw const FirebaseExceptions(
+            message: "No product corresponding to the provided barcode",
+            statusCode: 404);
+      }
+      return ProductModel.fromFirestore(myProduct.docs.first);
     } on FirebaseException catch (e) {
       throw FirebaseExceptions(message: e.toString(), statusCode: 404);
     }

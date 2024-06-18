@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yourmanager/core/util/typedef.dart';
 import 'package:yourmanager/features/authentication/domain/entities/users.dart';
@@ -43,6 +44,17 @@ class UserModel extends Users {
       phoneNumber: myUser.phoneNumber ?? "",
       image: myUser.photoURL ?? '',
       email: myUser.email ?? '',
+    );
+  }
+
+  factory UserModel.fromFirebaseFirestore(DocumentSnapshot myUser) {
+    Map<String, dynamic> myDatas = myUser.data() as Map<String, dynamic>;
+    return UserModel(
+      id: myUser.id,
+      fullName: myDatas['full_name'],
+      phoneNumber: myDatas['phone_number'],
+      image: myDatas['image'],
+      email: myDatas['email'],
     );
   }
 

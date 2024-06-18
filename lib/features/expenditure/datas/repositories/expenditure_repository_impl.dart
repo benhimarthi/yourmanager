@@ -40,7 +40,7 @@ class ExpenditureRepositoryImpl extends ExpenditureRepository {
   }
 
   @override
-  ResultVoid registerExpenditure(
+  ResultFuture<String> registerExpenditure(
       String title, double amount, DateTime date) async {
     try {
       final result = await _dataSource.registerExpenditure(title, amount, date);
